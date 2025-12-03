@@ -8,9 +8,15 @@ interface Props {
   post: BlogPost;
   index: number;
   className?: string;
+  section?: string; // Add section prop to determine the link path
 }
 
-export default function BlogCard({ post, index, className }: Props) {
+export default function BlogCard({
+  post,
+  index,
+  className,
+  section = "blog",
+}: Props) {
   const { title, image, date, description } = post.frontmatter;
   return (
     <div
@@ -33,7 +39,7 @@ export default function BlogCard({ post, index, className }: Props) {
 
       <Link
         className="before:absolute before:inset-0"
-        href={`/blog/${post.slug}`}
+        href={`/${section}/${post.slug}`}
       >
         <h2
           className="h5 mb-6"

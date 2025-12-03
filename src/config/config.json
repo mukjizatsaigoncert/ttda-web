@@ -27,8 +27,8 @@
 
   "navigation_button": {
     "enable": true,
-    "label": "Get This Template",
-    "link": "https://themefisher.com/products/nextspace-nextjs"
+    "label": "Liên hệ ngay",
+    "link": "/lien-he"
   },
 
   "footer_button": {

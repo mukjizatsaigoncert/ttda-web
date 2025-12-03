@@ -11,7 +11,7 @@ export default function Breadcrumbs({ className }: { className?: string }) {
 
   let parts = [
     {
-      label: "Home",
+      label: "Trang chu",
       href: "/",
       "aria-label": pathname === "/" ? "page" : undefined,
     },

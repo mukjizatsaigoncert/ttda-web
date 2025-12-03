@@ -1,4 +1,3 @@
-
 const config = require("./src/config/config.json");
 
 /** @type {import('next').NextConfig} */
@@ -8,6 +7,22 @@ const nextConfig = {
   trailingSlash: config.site.trailing_slash,
   output: "standalone",
   transpilePackages: ["next-mdx-remote"],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "1337",
+        pathname: "/uploads/**",
+      },
+      // Thêm domain production của Strapi nếu có
+      // {
+      //   protocol: "https",
+      //   hostname: "your-strapi-domain.com",
+      //   pathname: "/uploads/**",
+      // },
+    ],
+  },
 };
 
 module.exports = nextConfig;

@@ -1,7 +1,7 @@
 {
   "main": [
     {
-      "name": "All Pages",
+      "name": "Tất cả",
       "url": "",
       "hasMegamenu": true,
       "image": "/images/menu.png",
@@ -77,12 +77,12 @@
       ]
     },
     {
-      "name": "Works",
-      "url": "/projects"
+      "name": "Giới thiệu",
+      "url": "/gioi-thieu"
     },
     {
-      "name": "Contact",
-      "url": "/contact"
+      "name": "Tin tức",
+      "url": "/tin-tuc"
     }
   ],
   "footer": [
