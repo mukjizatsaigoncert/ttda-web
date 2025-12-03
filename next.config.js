@@ -17,8 +17,8 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "creative-dance-2bde5b47f7.strapiapp.com",
-        pathname: "/uploads/**",
+        hostname: "creative-dance-2bde5b47f7.media.strapiapp.com",
+        pathname: "/**",
       },
       // Thêm domain production của Strapi nếu có
       // {
