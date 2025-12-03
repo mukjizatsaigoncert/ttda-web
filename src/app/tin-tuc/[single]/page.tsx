@@ -126,9 +126,6 @@ function renderBlocks(blocks?: StrapiBlock[]) {
   });
 }
 
-// Generate static params
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   const slugs = await fetchAllArticleSlugs();
 
