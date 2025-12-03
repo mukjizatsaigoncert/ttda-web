@@ -23,6 +23,9 @@ import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { notFound } from "next/navigation";
 
+// Revalidate route mỗi 60 giây
+export const revalidate = 60;
+
 // Render nội dung từ blocks của Strapi V5
 function renderBlocks(blocks?: StrapiBlock[]) {
   if (!blocks || blocks.length === 0) {

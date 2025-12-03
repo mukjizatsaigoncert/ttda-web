@@ -14,6 +14,9 @@ import SeoMeta from "@/partials/SeoMeta";
 import { Faqs } from "@/types";
 import { notFound } from "next/navigation";
 
+// Revalidate route mỗi 60 giây
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const totalPages = await fetchTotalPages();
   const paths = [];

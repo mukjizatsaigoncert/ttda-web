@@ -12,6 +12,9 @@ import PageHeader from "@/partials/PageHeader";
 import SeoMeta from "@/partials/SeoMeta";
 import { Faqs } from "@/types";
 
+// Revalidate route mỗi 60 giây
+export const revalidate = 60;
+
 const TinTucPage = async () => {
   const faqsData = getListPage<Faqs["frontmatter"]>("faqs/_index.md");
 
