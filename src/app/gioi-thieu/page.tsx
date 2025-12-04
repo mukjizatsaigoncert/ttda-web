@@ -21,13 +21,10 @@ export default function GioiThieuPage() {
           <div className="row justify-center">
             <div className="col-11 lg:col-10">
               {/* Article Header */}
-              <div
-                data-aos="fade-up-sm"
-                data-aos-delay="100"
-                className="mb-12"
-              >
+              <div data-aos="fade-up-sm" data-aos-delay="100" className="mb-12">
                 <h2 className="h2 text-primary font-bold leading-tight mb-6 text-center lg:text-left">
-                  TRUNG TÂM ĐIỆN ẢNH VÀ TRUYỀN HÌNH SÀI GÒN HỢP TÁC CÙNG PHÁT TRIỂN
+                  TRUNG TÂM ĐIỆN ẢNH VÀ TRUYỀN HÌNH SÀI GÒN HỢP TÁC CÙNG PHÁT
+                  TRIỂN
                 </h2>
                 <div className="flex flex-wrap items-center gap-4 text-body-color text-sm border-b border-border pb-6">
                   <span className="flex items-center gap-2">
@@ -54,39 +51,45 @@ export default function GioiThieuPage() {
               </div>
 
               {/* Content Section 1 */}
-              <div
-                data-aos="fade-up-sm"
-                data-aos-delay="150"
-                className="mb-10"
-              >
+              <div data-aos="fade-up-sm" data-aos-delay="150" className="mb-10">
                 <p className="text-lg font-semibold text-primary mb-4 italic border-l-4 border-primary pl-4">
-                  Chuyên nghiệp, Sáng tạo, Trách nhiệm – Đó là những gì chúng tôi sẽ mang lại cho khách hàng.
+                  Chuyên nghiệp, Sáng tạo, Trách nhiệm – Đó là những gì chúng
+                  tôi sẽ mang lại cho khách hàng.
                 </p>
                 <p className="text-body-color leading-relaxed text-justify">
-                  Chúng tôi cung cấp đa dạng các giải pháp online – offline marketing uy tín dựa trên ngân sách phù hợp cho từng dự án quy mô lớn nhỏ khác nhau. Cùng đội ngũ lãnh đạo kinh nghiệm và nhân sự &ldquo;đa-zi-năng&rdquo;, ngoài giải pháp về online marketing, chúng tôi còn cung cấp các dịch vụ tiếp thị trọn gói thuộc &ldquo;Below The Line Marketing Activities&rdquo; bao gồm: Tổ chức sự kiện – hội nghị, chiến dịch kích hoạt thương hiệu, kích hoạt bán hàng, tiếp thị trực tiếp và các dịch vụ quảng cáo khác.
+                  Chúng tôi cung cấp đa dạng các giải pháp online – offline
+                  marketing uy tín dựa trên ngân sách phù hợp cho từng dự án quy
+                  mô lớn nhỏ khác nhau. Cùng đội ngũ lãnh đạo kinh nghiệm và
+                  nhân sự &ldquo;đa-zi-năng&rdquo;, ngoài giải pháp về online
+                  marketing, chúng tôi còn cung cấp các dịch vụ tiếp thị trọn
+                  gói thuộc &ldquo;Below The Line Marketing Activities&rdquo;
+                  bao gồm: Tổ chức sự kiện – hội nghị, chiến dịch kích hoạt
+                  thương hiệu, kích hoạt bán hàng, tiếp thị trực tiếp và các
+                  dịch vụ quảng cáo khác.
                 </p>
               </div>
 
               {/* Divider */}
-              <div
-                data-aos="fade-up-sm"
-                data-aos-delay="200"
-                className="my-12"
-              >
+              <div data-aos="fade-up-sm" data-aos-delay="200" className="my-12">
                 <hr className="border-border" />
               </div>
 
               {/* Content Section 2 */}
-              <div
-                data-aos="fade-up-sm"
-                data-aos-delay="250"
-                className="mb-10"
-              >
+              <div data-aos="fade-up-sm" data-aos-delay="250" className="mb-10">
                 <p className="text-lg font-semibold text-primary mb-4 italic border-l-4 border-primary pl-4">
-                  Chuyên nghiệp, Sáng tạo, Trách nhiệm – Đó là những gì chúng tôi sẽ mang lại cho khách hàng.
+                  Chuyên nghiệp, Sáng tạo, Trách nhiệm – Đó là những gì chúng
+                  tôi sẽ mang lại cho khách hàng.
                 </p>
                 <p className="text-body-color leading-relaxed text-justify">
-                  Chúng tôi cung cấp đa dạng các giải pháp online – offline marketing uy tín dựa trên ngân sách phù hợp cho từng dự án quy mô lớn nhỏ khác nhau. Cùng đội ngũ lãnh đạo kinh nghiệm và nhân sự &ldquo;đa-zi-năng&rdquo;, ngoài giải pháp về online marketing, chúng tôi còn cung cấp các dịch vụ tiếp thị trọn gói thuộc &ldquo;Below The Line Marketing Activities&rdquo; bao gồm: Tổ chức sự kiện – hội nghị, chiến dịch kích hoạt thương hiệu, kích hoạt bán hàng, tiếp thị trực tiếp và các dịch vụ quảng cáo khác.
+                  Chúng tôi cung cấp đa dạng các giải pháp online – offline
+                  marketing uy tín dựa trên ngân sách phù hợp cho từng dự án quy
+                  mô lớn nhỏ khác nhau. Cùng đội ngũ lãnh đạo kinh nghiệm và
+                  nhân sự &ldquo;đa-zi-năng&rdquo;, ngoài giải pháp về online
+                  marketing, chúng tôi còn cung cấp các dịch vụ tiếp thị trọn
+                  gói thuộc &ldquo;Below The Line Marketing Activities&rdquo;
+                  bao gồm: Tổ chức sự kiện – hội nghị, chiến dịch kích hoạt
+                  thương hiệu, kích hoạt bán hàng, tiếp thị trực tiếp và các
+                  dịch vụ quảng cáo khác.
                 </p>
               </div>
 
@@ -108,4 +111,3 @@ export default function GioiThieuPage() {
     </>
   );
 }
-
