@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import CalendarSidebar from "@/components/CalendarSidebar";
 import Logo from "@/components/Logo";
 import config from "@/config/config.json";
 import menu from "@/config/menu.json";
@@ -135,7 +136,11 @@ export default function Header() {
                           {subchild.children?.map((child) => (
                             <li className="nav-dropdown-item" key={child.url}>
                               <Link
-                                href={child.url || "#"}
+                                href={
+                                  menu.url
+                                    ? `/${menu.url}/${child.url}`
+                                    : `${child.url}` || "#"
+                                }
                                 aria-label={child.name || "preview"}
                                 className={`nav-dropdown-link block ${
                                   !menu.hasMegamenu
@@ -243,6 +248,9 @@ export default function Header() {
           </div>
         </div>
       </nav>
+
+      {/* Calendar Bar */}
+      <CalendarSidebar />
     </header>
   );
 }

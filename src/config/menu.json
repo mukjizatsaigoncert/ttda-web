@@ -9,48 +9,32 @@
         {
           "children": [
             {
-              "name": "Homepage",
+              "name": "Trang chủ",
               "url": "/"
             },
             {
-              "name": "About",
-              "url": "/about"
+              "name": "Giới thiệu",
+              "url": "/gioi-thieu"
             },
             {
-              "name": "Lịch vạn niên",
+              "name": "Tuyển dụng",
+              "url": "/tuyen-dung"
+            },
+            {
+              "name": "Liên hệ",
+              "url": "/lien-he"
+            },
+            {
+              "name": "Tin tức",
+              "url": "/tin-tuc"
+            },
+            {
+              "name": "Lịch Vạn Niên",
               "url": "/lich-van-nien"
-            },
-            {
-              "name": "Services",
-              "url": "/services"
-            },
-            {
-              "name": "Blog",
-              "url": "/blog"
-            },
-            {
-              "name": "Privacy",
-              "url": "/privacy-policy"
-            },
-            {
-              "name": "Reviews",
-              "url": "/reviews"
-            },
-            {
-              "name": "Blog Details",
-              "url": "/blog/post-1"
             },
             {
               "name": "FAQs",
               "url": "/faqs"
-            },
-            {
-              "name": "Projects",
-              "url": "/projects"
-            },
-            {
-              "name": "Gallery",
-              "url": "/gallery"
             },
             {
               "name": "Contact",
@@ -81,8 +65,31 @@
       "url": "/gioi-thieu"
     },
     {
-      "name": "Tin tức",
-      "url": "/tin-tuc"
+      "name": "Lĩnh vực hoạt động",
+      "url": "linh-vuc-hoat-dong",
+      "hasMegamenu": false,
+      "children": [
+        {
+          "children": [
+            {
+              "name": "Tổ chức sự kiện",
+              "url": "/to-chuc-su-kien"
+            },
+            {
+              "name": "Thiết kế thương hiệu",
+              "url": "/thiet-ke-thuong-hieu"
+            },
+            {
+              "name": "Sản xuất video",
+              "url": "/san-xuat-video"
+            },
+            {
+              "name": "Quản lý kênh truyền thông",
+              "url": "/quan-ly-kenh-truyen-thong"
+            }
+          ]
+        }
+      ]
     }
   ],
   "footer": [
