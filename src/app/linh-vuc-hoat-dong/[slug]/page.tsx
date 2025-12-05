@@ -104,8 +104,6 @@ const LinhVucHoatDongPage = async ({ params }: PageProps) => {
           </div>
         </div>
       </section>
-
-      <CallToAction isNoSectionTop />
     </>
   );
 };
