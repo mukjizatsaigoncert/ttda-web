@@ -82,7 +82,7 @@ export default function Header() {
             <React.Fragment key={menu.url}>
               {menu.hasMegamenu !== undefined && menu.name ? (
                 <li
-                  className={`nav-item nav-dropdown group ${activeDropdown === menu.name ? "active" : ""}`}
+                  className={`nav-item nav-dropdown group ${!menu.hasMegamenu ? "relative" : ""} ${activeDropdown === menu.name ? "active" : ""}`}
                 >
                   <span
                     className={`nav-link inline-flex items-center ${

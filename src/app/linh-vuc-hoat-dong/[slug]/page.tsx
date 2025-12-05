@@ -7,7 +7,6 @@ import {
   fetchCategoryBySlug,
   fetchAllCategorySlugs,
 } from "@/lib/strapi/api/categories";
-import CallToAction from "@/partials/CallToAction";
 import PageHeader from "@/partials/PageHeader";
 import SeoMeta from "@/partials/SeoMeta";
 import { notFound } from "next/navigation";
