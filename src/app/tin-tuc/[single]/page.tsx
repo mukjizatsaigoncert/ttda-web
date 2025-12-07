@@ -206,7 +206,7 @@ const TinTucDetailPage = async (props: {
               </div>
 
               {/* Social Share */}
-              <div className="border-t border-border pt-8">
+              <div className="border-t border-border pt-8 pb-8">
                 <SocialShare
                   url={`${process.env.NEXT_PUBLIC_SITE_URL || "https://dienanhtruyenhinh.vn"}/tin-tuc/${single}`}
                   title={post.frontmatter.title}
