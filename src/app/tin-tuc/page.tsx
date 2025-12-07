@@ -6,8 +6,6 @@ import {
   fetchArticles,
   transformStrapiArticle,
 } from "@/lib/strapi/api/articles";
-import CallToAction from "@/partials/CallToAction";
-import FAQs from "@/partials/FAQs";
 import PageHeader from "@/partials/PageHeader";
 import SeoMeta from "@/partials/SeoMeta";
 import { Faqs } from "@/types";
@@ -65,9 +63,6 @@ const TinTucPage = async () => {
           </div>
         </div>
       </section>
-
-      <CallToAction isNoSectionTop />
-      <FAQs isNoSectionTop faqsData={faqsData} />
     </>
   );
 };

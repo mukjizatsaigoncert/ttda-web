@@ -1,5 +1,4 @@
 import ContactForm from "@/components/ContactForm";
-import CallToAction from "@/partials/CallToAction";
 import PageHeader from "@/partials/PageHeader";
 import SeoMeta from "@/partials/SeoMeta";
 import Link from "next/link";
@@ -156,8 +155,6 @@ const LienHePage = () => {
           </div>
         </div>
       </section>
-
-      <CallToAction isNoSectionTop isNoSectionBottom />
     </>
   );
 };

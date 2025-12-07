@@ -1,4 +1,4 @@
-import { fetchFromStrapi, StrapiResponse } from "./articles";
+import { fetchFromStrapi, StrapiResponse, StrapiMedia } from "./articles";
 
 // Interface cho category từ Strapi V5
 export interface StrapiCategory {
@@ -7,6 +7,7 @@ export interface StrapiCategory {
   name: string;
   slug: string;
   description?: string;
+  cover?: StrapiMedia | null;
 }
 
 export interface StrapiCategoryResponse {
@@ -27,7 +28,7 @@ export async function fetchAllCategories(): Promise<StrapiCategory[]> {
 
   try {
     const data = await fetchFromStrapi<StrapiCategoryResponse>(
-      `categories?pagination[pageSize]=100`
+      `categories?populate=cover&pagination[pageSize]=10`
     );
     console.log(
       `✅ [fetchAllCategories] Tìm thấy ${data.data.length} categories`

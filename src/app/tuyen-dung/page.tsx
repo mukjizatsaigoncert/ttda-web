@@ -1,5 +1,4 @@
 import { fetchAllCareers, getWorkingTimeLabel } from "@/lib/strapi/api/careers";
-import CallToAction from "@/partials/CallToAction";
 import PageHeader from "@/partials/PageHeader";
 import SeoMeta from "@/partials/SeoMeta";
 import Link from "next/link";

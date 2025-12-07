@@ -15,14 +15,14 @@ const NotFound = async () => {
           <div className="row justify-center">
             <div className="sm:col-10 md:col-8 lg:col-6">
               <span className="text-h1 lg:text-[6rem] block font-medium text-white">
-                Whooops!
+                Rất tiếc!
               </span>
               <div className="content mb-14">
                 <p className="text-white">
-                  You may have type wrong URL or this page has been removed.
+                  Bạn có thể đã nhập sai URL hoặc trang này đã bị xóa.
                 </p>
               </div>
-              <Button enable label="Back to Home" link="/" />
+              <Button enable label="Quay về trang chủ" link="/" />
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@
       "name": "Tất cả",
       "url": "",
       "hasMegamenu": true,
-      "image": "/images/menu.png",
+      "image": "/images/custom/mega-menu.jpg",
       "children": [
         {
           "children": [
@@ -29,32 +29,24 @@
               "url": "/tin-tuc"
             },
             {
-              "name": "Lịch Vạn Niên",
+              "name": "Lịch vạn niên",
               "url": "/lich-van-nien"
             },
             {
-              "name": "FAQs",
-              "url": "/faqs"
+              "name": "Tổ chức sự kiện",
+              "url": "/to-chuc-su-kien"
             },
             {
-              "name": "Contact",
-              "url": "/contact"
+              "name": "Thiết kế thương hiệu",
+              "url": "/thiet-ke-thuong-hieu"
             },
             {
-              "name": "Project Details",
-              "url": "/projects/project-1"
+              "name": "Sản xuất video",
+              "url": "/san-xuat-video"
             },
             {
-              "name": "Career",
-              "url": "/career"
-            },
-            {
-              "name": "Elements",
-              "url": "/elements"
-            },
-            {
-              "name": "404",
-              "url": "/404"
+              "name": "Quản lý kênh truyền thông",
+              "url": "/quan-ly-kenh-truyen-thong"
             }
           ]
         }
