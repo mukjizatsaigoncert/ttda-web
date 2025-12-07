@@ -47,6 +47,10 @@
             {
               "name": "Quản lý kênh truyền thông",
               "url": "/quan-ly-kenh-truyen-thong"
+            },
+            {
+              "name": "Truyền thông",
+              "url": "/truyen-thong"
             }
           ]
         }
@@ -78,6 +82,10 @@
             {
               "name": "Quản lý kênh truyền thông",
               "url": "/quan-ly-kenh-truyen-thong"
+            },
+            {
+              "name": "Truyền thông",
+              "url": "/truyen-thong"
             }
           ]
         }

@@ -59,7 +59,7 @@ const LienHePage = () => {
             </div>
 
             {/* Thông tin liên hệ */}
-            <div className="lg:w-[44%] lg:mt-auto lg:pb-14">
+            <div className="lg:w-[44%] lg:mt-auto lg:pb-14 z-30">
               {/* Card chính */}
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                 <h3
