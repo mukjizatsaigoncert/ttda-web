@@ -2,6 +2,7 @@ import BlogCard from "@/components/BlogCard";
 import Button from "@/components/Button";
 import ImageFallback from "@/helpers/ImageFallback";
 import ImageSlider from "@/components/ImageSlider";
+import SocialShare from "@/components/SocialShare";
 import {
   fetchAllArticleSlugs,
   fetchArticleBySlug,
@@ -202,6 +203,14 @@ const TinTucDetailPage = async (props: {
                     <p>{post.frontmatter.description}</p>
                   </div>
                 )}
+              </div>
+
+              {/* Social Share */}
+              <div className="border-t border-border pt-8">
+                <SocialShare
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL || "https://dienanhtruyenhinh.vn"}/tin-tuc/${single}`}
+                  title={post.frontmatter.title}
+                />
               </div>
             </article>
           </div>
