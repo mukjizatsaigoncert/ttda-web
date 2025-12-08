@@ -8,7 +8,7 @@ import menu from "@/config/menu.json";
 import ImageFallback from "@/helpers/ImageFallback";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useCallback } from "react";
 
 export interface ChildNavigationLink {
   name?: string;
@@ -39,6 +39,15 @@ export default function Header() {
   const toggleDropdown = (menuName: string) => {
     setActiveDropdown((prev) => (prev === menuName ? null : menuName));
   };
+
+  // Function to close mobile menu
+  const closeMobileMenu = useCallback(() => {
+    const navToggle = document.getElementById("nav-toggle") as HTMLInputElement;
+    if (navToggle) {
+      navToggle.checked = false;
+    }
+    setActiveDropdown(null);
+  }, []);
 
   return (
     <header className={`header fixed top-0 z-50 w-full`}>
@@ -152,6 +161,7 @@ export default function Header() {
                                     ? "active"
                                     : ""
                                 }`}
+                                onClick={closeMobileMenu}
                               >
                                 {child.name}
                               </Link>
@@ -200,6 +210,7 @@ export default function Header() {
                               "active") ||
                             ""
                           }`}
+                          onClick={closeMobileMenu}
                         >
                           {child.name}
                         </Link>
@@ -217,6 +228,7 @@ export default function Header() {
                           pathname === menu.url) &&
                         "active"
                       }`}
+                      onClick={closeMobileMenu}
                     >
                       {menu.name}
                     </Link>
@@ -230,6 +242,7 @@ export default function Header() {
               <Link
                 className="btn btn-primary btn-sm"
                 href={navigation_button.link}
+                onClick={closeMobileMenu}
               >
                 {navigation_button.label}
               </Link>

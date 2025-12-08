@@ -122,7 +122,7 @@ export default async function Home() {
       />
 
       {/* Hero Banner */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+      <section className="relative min-h-fit md:min-h-[85vh] flex items-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <ImageFallback
@@ -136,13 +136,13 @@ export default async function Home() {
           <div className="absolute inset-0 bg-linear-to-r from-primary/85 via-primary/60 to-primary/30" />
         </div>
 
-        <div className="container relative z-10 pt-20 md:pt-52 pb-20">
+        <div className="container relative z-10 pt-48 md:pt-52 pb-8 md:pb-20">
           <div className="row items-center">
             <div className="col-12 lg:col-8 xl:col-7">
-              <div className="inline-block bg-secondary/20 backdrop-blur-sm border border-secondary/30 rounded-full px-4 py-2 mb-6">
+              <div className="inline-block bg-secondary/20 backdrop-blur-sm border border-secondary/30 rounded-full px-3 py-1.5 md:px-4 md:py-2 mb-4 md:mb-6">
                 <p
                   data-aos="fade-up-sm"
-                  className="text-secondary font-semibold uppercase tracking-wider text-sm"
+                  className="text-secondary font-semibold uppercase tracking-wider text-xs md:text-sm"
                 >
                   ✨ {companyInfo.slogan}
                 </p>
@@ -150,41 +150,24 @@ export default async function Home() {
               <h1
                 data-aos="fade-up-sm"
                 data-aos-delay="100"
-                className="text-4xl md:text-5xl lg:text-6xl xl:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-lg"
+                className="text-3xl md:text-5xl lg:text-6xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight text-white drop-shadow-lg"
               >
                 {companyInfo.name}
               </h1>
-              <p
-                data-aos="fade-up-sm"
-                data-aos-delay="200"
-                className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl leading-relaxed"
-              >
-                {companyInfo.description}
-              </p>
-              <div
-                data-aos="fade-up-sm"
-                data-aos-delay="300"
-                className="flex gap-4 flex-wrap"
-              >
+              <div data-aos="fade-up-sm" data-aos-delay="200">
                 <Link
                   href="/gioi-thieu"
-                  className="btn btn-secondary px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  className="btn btn-secondary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
                 >
                   Tìm Hiểu Thêm
-                </Link>
-                <Link
-                  href="/lien-he"
-                  className="btn bg-white/10 backdrop-blur-sm text-white border-2 border-white/50 hover:bg-white hover:text-primary px-8 py-4 text-lg font-semibold transition-all"
-                >
-                  Liên Hệ Ngay
                 </Link>
               </div>
 
               {/* Stats mini */}
               <div
                 data-aos="fade-up-sm"
-                data-aos-delay="400"
-                className="flex gap-8 mt-12 pt-8 border-t border-white/20"
+                data-aos-delay="300"
+                className="flex gap-4 md:gap-8 mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/20"
               >
                 {[
                   { number: "15+", label: "Năm Kinh Nghiệm" },
@@ -192,10 +175,12 @@ export default async function Home() {
                   { number: "100+", label: "Khách Hàng" },
                 ].map((stat, i) => (
                   <div key={i} className="text-white">
-                    <div className="text-3xl md:text-4xl font-bold text-secondary">
+                    <div className="text-2xl md:text-4xl font-bold text-secondary">
                       {stat.number}
                     </div>
-                    <div className="text-sm text-white/70">{stat.label}</div>
+                    <div className="text-xs md:text-sm text-white/70">
+                      {stat.label}
+                    </div>
                   </div>
                 ))}
               </div>
