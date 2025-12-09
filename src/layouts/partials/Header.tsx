@@ -53,7 +53,7 @@ export default function Header() {
     <header className={`header fixed top-0 z-50 w-full`}>
       <nav className="navbar container relative z-10">
         {/* logo */}
-        <div className="order-0 lg:order-2">
+        <div className="order-0 lg:order-2 flex items-center">
           <Logo />
         </div>
         {/* navbar toggler */}
