@@ -9,6 +9,7 @@ import { fetchAllCategories } from "@/lib/strapi/api/categories";
 import CallToAction from "@/partials/CallToAction";
 import SeoMeta from "@/partials/SeoMeta";
 import Link from "next/link";
+import AnimatedStats from "@/partials/AnimatedStats";
 
 // Revalidate mỗi 60 giây
 export const revalidate = 60;
@@ -164,26 +165,14 @@ export default async function Home() {
               </div>
 
               {/* Stats mini */}
-              <div
-                data-aos="fade-up-sm"
-                data-aos-delay="300"
-                className="flex gap-4 md:gap-8 mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/20"
-              >
-                {[
+              <AnimatedStats
+                stats={[
                   { number: "15+", label: "Năm Kinh Nghiệm" },
                   { number: "500+", label: "Dự Án Thành Công" },
                   { number: "100+", label: "Khách Hàng" },
-                ].map((stat, i) => (
-                  <div key={i} className="text-white">
-                    <div className="text-2xl md:text-4xl font-bold text-secondary">
-                      {stat.number}
-                    </div>
-                    <div className="text-xs md:text-sm text-white/70">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                ]}
+                className="flex gap-4 md:gap-8 mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/20"
+              />
             </div>
           </div>
         </div>
