@@ -9,7 +9,8 @@ import { fetchAllCategories } from "@/lib/strapi/api/categories";
 import CallToAction from "@/partials/CallToAction";
 import SeoMeta from "@/partials/SeoMeta";
 import Link from "next/link";
-import AnimatedStats from "@/partials/AnimatedStats";
+import AnimatedStats from "@/layouts/partials/AnimatedStats";
+import AnimatedNumber from "@/layouts/partials/AnimatedNumber";
 
 // Revalidate mỗi 60 giây
 export const revalidate = 60;
@@ -201,9 +202,10 @@ export default async function Home() {
 
                 {/* Floating Card */}
                 <div className="absolute -bottom-6 -right-6 lg:bottom-8 lg:-right-8 z-20 bg-white rounded-2xl shadow-xl p-6 max-w-[200px]">
-                  <div className="text-5xl font-bold text-primary mb-1">
-                    15+
-                  </div>
+                  <AnimatedNumber
+                    value="15+"
+                    className="text-5xl font-bold text-primary mb-1"
+                  />
                   <div className="text-body-color text-sm">
                     Năm kinh nghiệm trong ngành
                   </div>
