@@ -138,7 +138,7 @@ export const GIO_CHI = [
   { chi: "Hợi", start: "21:00", end: "23:00" },
 ];
 
-// Con Nước (Tidal cycles) - chu kỳ 15 ngày âm lịch
+// Con Nước (Tidal cycles) - chu kỳ 14 ngày theo Lịch Văn Lang
 export const CON_NUOC = [
   { day: 1, name: "Nước rong", phase: "cường", desc: "Triều lên cao nhất" },
   { day: 2, name: "Nước rong", phase: "cường", desc: "Triều vẫn cao" },
@@ -157,8 +157,8 @@ export const CON_NUOC = [
   { day: 15, name: "Nước rong", phase: "cường", desc: "Triều bắt đầu lên cao" },
 ];
 
-// Ngày lễ đặc biệt Văn Lang
-export const NGAY_LE_VAN_LANG = [
+// Ngày lễ đặc biệt theo Âm Lịch
+export const NGAY_LE_AM_LICH = [
   { lunarMonth: 1, lunarDay: 1, name: "Tết Nguyên Đán", type: "major" },
   { lunarMonth: 1, lunarDay: 15, name: "Tết Nguyên Tiêu", type: "major" },
   { lunarMonth: 3, lunarDay: 3, name: "Tết Hàn Thực", type: "minor" },
@@ -197,6 +197,7 @@ export interface LunarDate {
   tietKhi: string;
   gioHoangDao: string[];
   monthName: string;
+  specialDay: string | null; // Ngày lễ đặc biệt theo âm lịch
 }
 
 export interface VanLangDate {
@@ -209,16 +210,11 @@ export interface VanLangDate {
   dayCanChi: string;
   dayOfYear: number; // Ngày thứ mấy trong năm Văn Lang
   weekOfYear: number; // Tuần 10 ngày trong năm
-  weekOfMonth: number; // Tuần 10 ngày trong tháng
-  specialDay: string | null;
+  weekOfMonth: number; // Tuần 14 ngày trong tháng (tuần con nước)
   conNuoc: {
     name: string;
     phase: string;
     desc: string;
-    canChi: string;
-    weekOfMonth: number; // Tuần trong tháng (nửa tháng 15 ngày)
-    weekOfYear: number; // Tuần trong năm (nửa tháng)
-    dayInCycle: number; // Ngày trong chu kỳ 15 ngày
   };
 }
 
@@ -489,24 +485,32 @@ export function getMonthCanChi(lunarMonth: number, lunarYear: number): string {
 
 /**
  * Tính Can Chi của ngày
+ * Chuẩn hóa theo: 04/02/2025 = Giáp Thìn
+ * JD(04/02/2025) = 2460710
+ * Giáp = index 0, Thìn = index 4
  */
 export function getDayCanChi(dd: number, mm: number, yy: number): string {
   const jd = jdFromDate(dd, mm, yy);
-  const can = CAN[(jd + 9) % 10];
-  const chi = CHI[(jd + 1) % 12];
+  // Chuẩn hóa offset để 04/02/2025 (JD=2460710) = Giáp Thìn
+  // (2460710 + can_offset) % 10 = 0 → can_offset = 0
+  // (2460710 + chi_offset) % 12 = 4 → chi_offset = 2
+  const can = CAN[(jd + 0) % 10];
+  const chi = CHI[(jd + 2) % 12];
   return `${can} ${chi}`;
 }
 
 /**
  * Lấy Chi của ngày
+ * Chuẩn hóa theo: 04/02/2025 = Thìn (index 4)
  */
 export function getDayChi(dd: number, mm: number, yy: number): string {
   const jd = jdFromDate(dd, mm, yy);
-  return CHI[(jd + 1) % 12];
+  return CHI[(jd + 2) % 12];
 }
 
 /**
  * Tính Can Chi của giờ
+ * Chuẩn hóa theo: 04/02/2025 giờ Tý = Giáp Tý
  */
 export function getHourCanChi(
   hour: number,
@@ -515,7 +519,7 @@ export function getHourCanChi(
   yy: number
 ): string {
   const jd = jdFromDate(dd, mm, yy);
-  const dayStem = (jd + 9) % 10;
+  const dayStem = (jd + 0) % 10; // Cùng offset với getDayCanChi
 
   // Xác định chi của giờ
   let hourBranch;
@@ -658,36 +662,54 @@ export function getLunarDateInfo(date: Date): LunarDate {
     tietKhi: getTietKhi(mm, dd),
     gioHoangDao: getGioHoangDao(dd, mm, yy),
     monthName: THANG_AM[lunarMonth - 1],
+    specialDay: getSpecialDay(lunarMonth, lunarDay),
   };
 }
 
 // ==================== VAN LANG CALENDAR FUNCTIONS ====================
 
-// 13 Tháng Văn Lang theo Chi (tháng 13 trùng với tháng 1 = Dần)
+// 12 Tháng Văn Lang theo Chi
+// Tên tháng: Số thứ tự + Địa Chi
 export const THANG_VAN_LANG_CHI = [
-  "Dần", // Tháng 01
-  "Mão", // Tháng 02
-  "Thìn", // Tháng 03
-  "Tỵ", // Tháng 04
-  "Ngọ", // Tháng 05
-  "Mùi", // Tháng 06
-  "Thân", // Tháng 07
-  "Dậu", // Tháng 08
-  "Tuất", // Tháng 09
-  "Hợi", // Tháng 10
-  "Tý", // Tháng 11
-  "Sửu", // Tháng 12
-  "Dần", // Tháng 13 (trùng với tháng 1)
+  "Dần", // Tháng 01 - Tháng Giêng
+  "Mão", // Tháng 02 - Tháng Hai
+  "Thìn", // Tháng 03 - Tháng Ba
+  "Tỵ", // Tháng 04 - Tháng Tư
+  "Ngọ", // Tháng 05 - Tháng Năm
+  "Mùi", // Tháng 06 - Tháng Sáu
+  "Thân", // Tháng 07 - Tháng Bảy
+  "Dậu", // Tháng 08 - Tháng Tám
+  "Tuất", // Tháng 09 - Tháng Chín
+  "Hợi", // Tháng 10 - Tháng Mười
+  "Tý", // Tháng 11 - Tháng Một (không phải Mười Một)
+  "Sửu", // Tháng 12 - Tháng Chạp
 ];
 
-// Điều chỉnh offset dựa trên dữ liệu thực tế từ PDF
-// Feb 4, 2025 = Van Lang Day 01
-const VAN_LANG_OFFSET = 6;
+// Tên tháng Văn Lang (chữ)
+export const THANG_VAN_LANG_TEN = [
+  "Giêng",
+  "Hai",
+  "Ba",
+  "Tư",
+  "Năm",
+  "Sáu",
+  "Bảy",
+  "Tám",
+  "Chín",
+  "Mười",
+  "Một",
+  "Chạp",
+];
 
-// Cấu trúc năm Văn Lang dựa trên dữ liệu thực tế:
-// - 5 ngày đặc biệt KHÔNG thuộc tháng nào: Day 1, 92, 183, 274, 358
-// - 12 tháng × 30 ngày = 360 ngày
-// - Tổng: 5 ngày đặc biệt + 360 ngày = 365 ngày
+// Ngày khởi đầu năm Văn Lang 2025 (Ất Tỵ)
+// 04/02/2025 = Ngày 1 = Hàn Xuân (ngày đặc biệt)
+const VAN_LANG_START_DATE = new Date(2025, 1, 4); // Feb 4, 2025
+
+// Cấu trúc năm Văn Lang:
+// - 5 ngày đặc biệt: Day 1 (Hàn Xuân), 92 (Vương Hầu), 183 (Nhiệt Thu), 274 (Thu Đông), 358 (Táo Quân)
+// - 12 tháng × 30 ngày = 360 ngày (M12 bị chia làm 2 phần: 335-357 và 359-364)
+// - Tổng: 5 ngày đặc biệt + 360 ngày = 365 ngày (năm thường)
+// - Năm nhuận có thể có thêm 1 ngày (Giao Thừa)
 interface VanLangPeriod {
   start: number;
   end: number;
@@ -696,35 +718,37 @@ interface VanLangPeriod {
 }
 
 const VAN_LANG_YEAR_STRUCTURE: VanLangPeriod[] = [
-  // Quý 1: Xuân
-  { start: 1, end: 1, month: 0, specialName: "Hàn-Xuân" },
-  { start: 2, end: 31, month: 1 }, // M1: 30 days (Dần)
-  { start: 32, end: 61, month: 2 }, // M2: 30 days (Mão)
-  { start: 62, end: 91, month: 3 }, // M3: 30 days (Thìn)
+  // Quý 1: Xuân (Lập Xuân)
+  { start: 1, end: 1, month: 0, specialName: "Hàn Xuân" }, // 04/02/2025
+  { start: 2, end: 31, month: 1 }, // M1 Dần: 30 days (05/02 - 06/03)
+  { start: 32, end: 61, month: 2 }, // M2 Mão: 30 days (07/03 - 05/04)
+  { start: 62, end: 91, month: 3 }, // M3 Thìn: 30 days (06/04 - 05/05)
 
-  // Quý 2: Hạ
-  { start: 92, end: 92, month: 0, specialName: "Vương Hầu" },
-  { start: 93, end: 122, month: 4 }, // M4: 30 days (Tỵ)
-  { start: 123, end: 152, month: 5 }, // M5: 30 days (Ngọ)
-  { start: 153, end: 182, month: 6 }, // M6: 30 days (Mùi)
+  // Quý 2: Hạ (Lập Hạ)
+  { start: 92, end: 92, month: 0, specialName: "Vương Hầu" }, // 06/05/2025
+  { start: 93, end: 122, month: 4 }, // M4 Tỵ: 30 days (07/05 - 05/06)
+  { start: 123, end: 152, month: 5 }, // M5 Ngọ: 30 days (06/06 - 05/07)
+  { start: 153, end: 182, month: 6 }, // M6 Mùi: 30 days (06/07 - 04/08)
 
-  // Quý 3: Thu
-  { start: 183, end: 183, month: 0, specialName: "Nhiệt-Thu" },
-  { start: 184, end: 213, month: 7 }, // M7: 30 days (Thân)
-  { start: 214, end: 243, month: 8 }, // M8: 30 days (Dậu)
-  { start: 244, end: 273, month: 9 }, // M9: 30 days (Tuất)
+  // Quý 3: Thu (Lập Thu)
+  { start: 183, end: 183, month: 0, specialName: "Nhiệt Thu" }, // 05/08/2025
+  { start: 184, end: 213, month: 7 }, // M7 Thân: 30 days (06/08 - 04/09)
+  { start: 214, end: 243, month: 8 }, // M8 Dậu: 30 days (05/09 - 04/10)
+  { start: 244, end: 273, month: 9 }, // M9 Tuất: 30 days (05/10 - 03/11)
 
-  // Quý 4: Đông
-  { start: 274, end: 274, month: 0, specialName: "Thu-Đông" },
-  { start: 275, end: 304, month: 10 }, // M10: 30 days (Hợi)
-  { start: 305, end: 334, month: 11 }, // M11: 30 days (Tý)
-  { start: 335, end: 357, month: 12 }, // M12 phần 1: 23 days (Sửu)
+  // Quý 4: Đông (Lập Đông)
+  { start: 274, end: 274, month: 0, specialName: "Thu Đông" }, // 04/11/2025
+  { start: 275, end: 304, month: 10 }, // M10 Hợi: 30 days (05/11 - 04/12)
+  { start: 305, end: 334, month: 11 }, // M11 Tý: 30 days (05/12 - 03/01/2026)
+  { start: 335, end: 357, month: 12 }, // M12 Sửu phần 1: 23 days (04/01 - 26/01/2026)
 
-  // Ngày Táo Quân
-  { start: 358, end: 358, month: 0, specialName: "Táo Quân" },
+  // Ngày 358 (Táo Quân) - ngày đặc biệt
+  { start: 358, end: 358, month: 0, specialName: "Táo Quân" }, // 27/01/2026
 
-  // M12 phần 2 (tiếp tục tháng Chạp)
-  { start: 359, end: 365, month: 12 }, // M12 phần 2: 7 days (Sửu)
+  { start: 359, end: 364, month: 12 }, // M12 Sửu phần 2: 6 days (28/01 - 02/02/2026)
+
+  // Ngày 365 (năm nhuận) hoặc kết thúc năm
+  { start: 365, end: 365, month: 0, specialName: "Giao Thừa" }, // 03/02/2026
 ];
 
 /**
@@ -788,8 +812,8 @@ function findVanLangPeriod(dayOfYear: number): VanLangPeriod | null {
 }
 
 /**
- * Kiểm tra ngày có phải ngày đặc biệt không (Giao mùa hoặc Táo Quân)
- * 5 ngày đặc biệt: Day 1 (Hàn-Xuân), 92 (Vương Hầu), 183 (Nhiệt-Thu), 274 (Thu-Đông), 358 (Táo Quân)
+ * Kiểm tra ngày có phải ngày đặc biệt không (Giao mùa, Táo Quân, hoặc Giao Thừa)
+ * 5-6 ngày đặc biệt: Day 1 (Hàn Xuân), 92 (Vương Hầu), 183 (Nhiệt Thu), 274 (Thu Đông), 358 (Táo Quân), 365 (Giao Thừa - năm nhuận)
  */
 export function isSpecialDay(dayOfYear: number): {
   isSpecial: boolean;
@@ -808,9 +832,9 @@ export function isSpecialDay(dayOfYear: number): {
 /**
  * Tính tháng và ngày Văn Lang từ dayOfYear
  * Cấu trúc năm:
- * - 5 ngày đặc biệt: Day 1, 92, 183, 274, 358 (không thuộc tháng nào)
- * - 12 tháng × 30 ngày = 360 ngày
- * - Tổng: 365 ngày
+ * - 5 ngày đặc biệt: Day 1 (Hàn Xuân), 92 (Vương Hầu), 183 (Nhiệt Thu), 274 (Thu Đông), 358 (Táo Quân)
+ * - 12 tháng × 30 ngày = 360 ngày (M12 bị chia làm 2 phần: 335-357 và 359-364)
+ * - Tổng: 5 ngày đặc biệt + 360 ngày = 365 ngày
  */
 export function getVanLangMonthDay(dayOfYear: number): {
   month: number;
@@ -847,7 +871,7 @@ export function getVanLangMonthDay(dayOfYear: number): {
   let dayInMonth = dayOfYear - period.start + 1;
 
   // Điều chỉnh cho M12 phần 2 (sau Táo Quân)
-  // M12 phần 1: Days 335-357 (D01-D23), Táo Quân: Day 358, M12 phần 2: Days 359-365 (D24-D30)
+  // M12 phần 1: Days 335-357 (D01-D23), Táo Quân: Day 358, M12 phần 2: Days 359-364 (D24-D30)
   if (period.start === 359) {
     dayInMonth = dayOfYear - 359 + 24; // Day 359 = M12D24
   }
@@ -862,13 +886,13 @@ export function getVanLangMonthDay(dayOfYear: number): {
 }
 
 /**
- * Lấy ngày lễ đặc biệt Văn Lang
+ * Lấy ngày lễ đặc lịch âm
  */
 export function getSpecialDay(
   lunarMonth: number,
   lunarDay: number
 ): string | null {
-  const specialDay = NGAY_LE_VAN_LANG.find(
+  const specialDay = NGAY_LE_AM_LICH.find(
     (d) => d.lunarMonth === lunarMonth && d.lunarDay === lunarDay
   );
   return specialDay ? specialDay.name : null;
@@ -897,81 +921,208 @@ export function getSinhHoi(dayCan: string): { sinh: string; hoi: string } {
 }
 
 /**
- * Tính thông tin Con Nước
- * Quy luật dựa trên dữ liệu thực tế:
- * - Chu kỳ 1: Ngày 2 = nghén, Ngày 3-15 = 01 con đến 13 con
- * - Chu kỳ 2: Ngày 16 = nghén, Ngày 17-29 = 01 con đến 13 con
- * - Ngày 30, 1 thuộc cuối chu kỳ 2 (14 con, 15 con hoặc tiếp tục)
- * - Ngày 05 con → "05 con chầy"
- * - Ngày 07 con → "07 con cườn"
+ * Tính Can Chi ngày theo Lịch Văn Lang
+ * Quy luật:
+ * - Bắt đầu từ Giáp Dần vào ngày 01 Tháng Giêng (N=1)
+ * - Chỉ đếm 360 ngày thường, BỎ QUA các ngày Biên (giao mùa)
+ * - Chu kỳ 60 ngày: Giáp Dần → Ất Mão → ... → Quý Sửu → Giáp Dần
+ * - Công thức: Can = (N-1) mod 10, Chi = (N+1) mod 12
+ *
+ * @param dayOfYear - Ngày thứ mấy trong năm Văn Lang (1-365)
+ * @returns Can Chi string hoặc null nếu là ngày Biên
+ */
+export function getVanLangDayCanChi(dayOfYear: number): string | null {
+  // Các ngày Biên (giao mùa và Táo Quân) không có Can Chi trong chu kỳ 360 ngày
+  const bienDays = [1, 92, 183, 274, 358, 365];
+  if (bienDays.includes(dayOfYear)) {
+    return null; // Ngày Biên - không thuộc chu kỳ 360 ngày
+  }
+
+  // Tính N - vị trí trong chuỗi 360 ngày thường (bỏ qua ngày Biên)
+  // Day 2-31: N = dayOfYear - 1 (đã trừ 1 ngày Biên: day 1)
+  // Day 32-91: N = dayOfYear - 1
+  // Day 93-182: N = dayOfYear - 2 (đã trừ 2 ngày Biên: day 1, 92)
+  // Day 184-273: N = dayOfYear - 3 (đã trừ 3 ngày Biên: day 1, 92, 183)
+  // Day 275-357: N = dayOfYear - 4 (đã trừ 4 ngày Biên: day 1, 92, 183, 274)
+  // Day 359-364: N = dayOfYear - 5 (đã trừ 5 ngày Biên: day 1, 92, 183, 274, 358)
+  let N: number;
+  if (dayOfYear < 92) {
+    N = dayOfYear - 1;
+  } else if (dayOfYear < 183) {
+    N = dayOfYear - 2;
+  } else if (dayOfYear < 274) {
+    N = dayOfYear - 3;
+  } else if (dayOfYear < 358) {
+    N = dayOfYear - 4;
+  } else {
+    // dayOfYear >= 359
+    N = dayOfYear - 5;
+  }
+
+  // Tính Can Chi từ N (1-360)
+  // Bắt đầu từ Giáp Dần (Can index 0, Chi index 2)
+  // Can: (N-1) mod 10
+  // Chi: (N+1) mod 12
+  const canIndex = (N - 1) % 10;
+  const chiIndex = (N + 1) % 12;
+
+  return `${CAN[canIndex]} ${CHI[chiIndex]}`;
+}
+
+// Ngày nghén đầu tiên của năm 2025 (04/02/2025)
+// Các ngày nghén cách nhau 14 ngày: 4/2, 18/2, 4/3, 18/3, 1/4, 15/4, ...
+const CON_NUOC_START_DATE = new Date(2025, 1, 4); // Feb 4, 2025
+
+/**
+ * Tính thông tin Con Nước theo Lịch Văn Lang
+ * Quy luật chu kỳ 14 ngày (tính từ ngày nghén cố định):
+ * - Ngày 1: Nghén (neap tide, thủy triều nhỏ)
+ * - Ngày 2: 01 con
+ * - Ngày 3: 02 con
+ * - Ngày 4: 03 con
+ * - Ngày 5: 04 con
+ * - Ngày 6: 05 con chày (chảy - thủy triều chuyển tiếp)
+ * - Ngày 7: 06 con
+ * - Ngày 8: 07 con cường (spring tide, thủy triều lớn nhất)
+ * - Ngày 9: 08 con
+ * - Ngày 10: 09 con
+ * - Ngày 11: 10 con
+ * - Ngày 12: 11 con
+ * - Ngày 13: 12 con
+ * - Ngày 14: 13 con
+ * - Ngày 15: Nghén mới (chu kỳ tiếp)
+ *
+ * Tuần con nước: 14 ngày/tuần (không phải 7 ngày)
+ * Tháng: theo Lịch Văn Lang (30 ngày/tháng, mỗi tháng có ~2 tuần con nước)
+ * Nghén cách nhau 14 ngày, khoảng 26 chu kỳ/năm
+ * Ngày nghén đầu tiên 2025: 04/02/2025
  */
 export function getConNuoc(
-  lunarDay: number,
-  lunarMonth: number,
+  vanLangDay: number,
+  vanLangMonth: number,
   dd: number,
   mm: number,
-  yy: number
+  yy: number,
+  dayOfYear?: number,
+  vanLangYearStart?: Date
 ): {
   name: string;
   dayNumber: number;
   cycleName: string;
   weekOfMonth: number;
   weekOfYear: number;
-  sinhHoi: { sinh: string; hoi: string };
 } {
-  // Xác định chu kỳ và ngày trong chu kỳ
-  let dayNumber: number;
-  let cycleNumber: number; // 1 hoặc 2 trong tháng
-
-  if (lunarDay === 2) {
-    // Ngày 2 = nghén chu kỳ 1
-    cycleNumber = 1;
-    dayNumber = 0; // nghén
-  } else if (lunarDay >= 3 && lunarDay <= 15) {
-    // Chu kỳ 1: Ngày 3-15 = 01 con đến 13 con
-    cycleNumber = 1;
-    dayNumber = lunarDay - 2; // ngày 3 = 01 con, ngày 15 = 13 con
-  } else if (lunarDay === 16) {
-    // Ngày 16 = nghén chu kỳ 2
-    cycleNumber = 2;
-    dayNumber = 0; // nghén
-  } else if (lunarDay >= 17 && lunarDay <= 29) {
-    // Chu kỳ 2: Ngày 17-29 = 01 con đến 13 con
-    cycleNumber = 2;
-    dayNumber = lunarDay - 16; // ngày 17 = 01 con, ngày 29 = 13 con
-  } else if (lunarDay === 30) {
-    // Ngày 30 = cuối chu kỳ 2 (14 con hoặc nghén tháng sau?)
-    cycleNumber = 2;
-    dayNumber = 14;
+  // Tính số ngày từ đầu năm Văn Lang (reset mỗi năm)
+  let daysSinceYearStart = 0;
+  if (dayOfYear && vanLangYearStart) {
+    const currentDate = new Date(yy, mm - 1, dd);
+    const diffTime = currentDate.getTime() - vanLangYearStart.getTime();
+    daysSinceYearStart = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
   } else {
-    // Ngày 1 = cuối chu kỳ 2 tháng trước
-    cycleNumber = 1; // Đầu tháng mới
-    dayNumber = 13; // Cuối chu kỳ 2 tháng trước
+    // Fallback: tính từ ngày nghén đầu tiên nếu không có thông tin năm
+    const currentDate = new Date(yy, mm - 1, dd);
+    const diffTime = currentDate.getTime() - CON_NUOC_START_DATE.getTime();
+    daysSinceYearStart = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
   }
 
-  // Tên ngày con nước
+  // Xử lý ngày đặc biệt: Táo Quân (358) và ngày sau Táo Quân (359)
+  if (dayOfYear === 358) {
+    // Ngày Táo Quân = ngày 7 nước cường (không tính trong chu kỳ)
+    // Tính tuần dựa trên ngày 357 (ngày trước Táo Quân)
+    const adjustedDays = daysSinceYearStart - 1;
+    return {
+      name: "Ngày 07 nước cường",
+      dayNumber: 7,
+      cycleName: "nước cường",
+      weekOfMonth: 0, // Ngày đặc biệt không thuộc tháng
+      weekOfYear: Math.ceil((adjustedDays - 1) / 14),
+    };
+  }
+
+  if (dayOfYear === 359) {
+    // Ngày sau Táo Quân = ngày 7 nước dồn (không tính trong chu kỳ)
+    // Tính tuần dựa trên ngày 357 (bỏ qua cả ngày 358 và 359)
+    const adjustedDays = daysSinceYearStart - 2;
+    return {
+      name: "Ngày 07 nước dồn",
+      dayNumber: 7,
+      cycleName: "nước dồn",
+      weekOfMonth: Math.ceil(vanLangDay / 14), // Thuộc M12 phần 2
+      weekOfYear: Math.ceil((adjustedDays - 1) / 14),
+    };
+  }
+
+  // Bỏ qua ngày 358 (Táo Quân) và 359 (ngày sau Táo Quân) khi tính chu kỳ
+  // Điều chỉnh daysSinceYearStart để bỏ qua 2 ngày đặc biệt này
+  // Logic: Ngày 357 = ngày 07 con cường (dayInCycle = 8)
+  //        Ngày 360 phải là ngày 08 con (dayInCycle = 9)
+  // Vì bỏ qua 2 ngày (358 và 359), nên ngày 360 sẽ được tính như ngày 358 trong chu kỳ
+  // Nhưng để có dayInCycle = 9, cần adjustedDays sao cho (adjustedDays - 1) % 14 + 1 = 9
+  // Giải: (adjustedDays - 1) % 14 = 8, adjustedDays - 1 = 8 + 14*k
+  // Với k = 25: adjustedDays = 8 + 350 + 1 = 359
+  // Vậy ngày 360 cần adjustedDays = 359 (tức là trừ 1, không phải trừ 2)
+  // Nhưng điều này có nghĩa là chỉ bỏ qua ngày 358, không bỏ qua ngày 359?
+  // Thực ra: Ngày 357 có dayInCycle = 8, ngày tiếp theo (358) bị bỏ qua
+  //          Ngày 359 cũng bị bỏ qua, ngày 360 phải là ngày tiếp theo của 357
+  //          Vậy ngày 360 = ngày 357 + 3 = ngày thứ 360 trong chu kỳ
+  //          Nhưng trong chu kỳ, ngày sau ngày 8 (07 con cường) là ngày 9 (08 con)
+  //          Vậy adjustedDays phải cho dayInCycle = 9
+  //          (adjustedDays - 1) % 14 + 1 = 9 => adjustedDays - 1 = 8 + 14*k
+  //          Với k = 25: adjustedDays = 359
+  let adjustedDays = daysSinceYearStart;
+  if (dayOfYear && dayOfYear > 359) {
+    // Ngày 360: adjustedDays = 360 - 1 = 359 để có dayInCycle = 9
+    // Điều này có nghĩa là chỉ bỏ qua ngày 358 trong tính toán chu kỳ
+    // Ngày 359 cũng bị bỏ qua nhưng không ảnh hưởng đến tính toán vì đã xử lý riêng
+    adjustedDays = daysSinceYearStart - 1;
+  }
+
+  // Tính vị trí trong chu kỳ 14 ngày (đã bỏ qua ngày 358 và 359)
+  // adjustedDays = 1 → nghén (ngày 1 trong chu kỳ, dayInCycle = 1)
+  // adjustedDays = 2 → 01 con (ngày 2 trong chu kỳ, dayInCycle = 2)
+  // adjustedDays = 8 → 07 con cường (ngày 8 trong chu kỳ, dayInCycle = 8)
+  // adjustedDays = 9 → 08 con (ngày 9 trong chu kỳ, dayInCycle = 9)
+  // adjustedDays = 14 → 13 con (ngày 14 trong chu kỳ, dayInCycle = 14)
+  // adjustedDays = 15 → nghén mới (ngày 1 trong chu kỳ mới, dayInCycle = 1)
+  let dayInCycle = ((adjustedDays - 1) % 14) + 1; // 1-14
+  if (dayInCycle <= 0) dayInCycle += 14; // Xử lý ngày trước ngày bắt đầu
+
+  // Tính dayNumber (số thứ tự con nước)
+  // dayInCycle = 1 → nghén (dayNumber = 0)
+  // dayInCycle = 2 → 01 con (dayNumber = 1)
+  // dayInCycle = 8 → 07 con cường (dayNumber = 7)
+  // dayInCycle = 9 → 08 con (dayNumber = 8)
+  // dayInCycle = 14 → 13 con (dayNumber = 13)
+  const dayNumber = dayInCycle === 1 ? 0 : dayInCycle - 1;
+
+  // Tên ngày con nước với các mốc đặc biệt
+  // dayInCycle = 8 → dayNumber = 7 → "con cường"
+  // dayInCycle = 9 → dayNumber = 8 → "con"
+  // Vì đã bỏ qua ngày 358 và 359, nên:
+  // - Ngày 360: adjustedDays = 359, dayInCycle = 9, dayNumber = 8 → "08 con" ✓
   let cycleName: string;
   if (dayNumber === 0) {
     cycleName = "nghén";
   } else if (dayNumber === 5) {
-    cycleName = "con chầy";
+    cycleName = "con chày"; // 05 con chày - thủy triều chảy/chuyển tiếp
   } else if (dayNumber === 7) {
-    cycleName = "con cườn";
+    // Ngày 7 con cường chỉ khi dayInCycle = 8 (ngày 8 trong chu kỳ)
+    // Sau khi bỏ qua ngày 358 và 359, ngày 360 sẽ có dayInCycle = 9, dayNumber = 8
+    cycleName = dayInCycle === 8 ? "con cường" : "con"; // 07 con cường - thủy triều lớn nhất
   } else {
     cycleName = "con";
   }
 
-  // Tuần trong tháng (2 tuần/tháng)
-  const weekOfMonth = cycleNumber;
+  // Tuần trong tháng Văn Lang (14 ngày/tuần, 30 ngày/tháng)
+  // Tuần 1: ngày 1-14, Tuần 2: ngày 15-28, Tuần 3: ngày 29-30
+  // Nếu là ngày đặc biệt (vanLangMonth = 0), tuần = 0
+  let weekOfMonth = 0;
+  if (vanLangMonth > 0 && vanLangDay > 0) {
+    weekOfMonth = Math.ceil(vanLangDay / 14);
+  }
 
-  // Tuần trong năm (tính theo tháng âm lịch)
-  // Mỗi tháng có 2 chu kỳ, nên tuần năm = (tháng - 1) * 2 + chu kỳ
-  const weekOfYear = (lunarMonth - 1) * 2 + cycleNumber;
-
-  // Lấy Can của ngày để tính Sinh-Hồi
-  const dayCanChi = getDayCanChi(dd, mm, yy);
-  const dayCan = dayCanChi.split(" ")[0];
-  const sinhHoi = getSinhHoi(dayCan);
+  // Tuần trong năm (tính theo số chu kỳ con nước từ đầu năm, đã bỏ qua ngày 358 và 359)
+  const weekOfYear = Math.ceil((adjustedDays - 1) / 14);
 
   return {
     name:
@@ -982,33 +1133,65 @@ export function getConNuoc(
     cycleName,
     weekOfMonth,
     weekOfYear,
-    sinhHoi,
   };
+}
+
+/**
+ * Lấy ngày khởi đầu năm Văn Lang
+ * Năm Văn Lang bắt đầu từ ngày Lập Xuân (khoảng 4/2 hàng năm)
+ * 2025: 04/02/2025
+ */
+function getVanLangYearStart(year: number): Date {
+  // Năm Văn Lang bắt đầu từ khoảng 4/2 (có thể điều chỉnh theo tiết Lập Xuân)
+  // Đây là giá trị cố định cho năm 2025, các năm khác cần tính toán
+  if (year === 2025) {
+    return new Date(2025, 1, 4); // 04/02/2025
+  }
+  // Các năm khác: ước tính dựa trên chu kỳ 365/366 ngày
+  const baseYear = 2025;
+  const baseDateMs = new Date(2025, 1, 4).getTime();
+  const yearDiff = year - baseYear;
+  // Tính số ngày giữa các năm (trung bình 365.25 ngày/năm)
+  const daysDiff = Math.round(yearDiff * 365.25);
+  return new Date(baseDateMs + daysDiff * 24 * 60 * 60 * 1000);
 }
 
 /**
  * Lấy thông tin Lịch Văn Lang
  * Quy luật:
- * - Năm bắt đầu: Mùng 1 Tết Nguyên Đán
- * - 5 ngày Tết + 13 tháng × 28 ngày + Giao mùa
- * - Tháng: Dần → Mão → Thìn → ... → Sửu → Dần (13)
+ * - Năm bắt đầu: Ngày Lập Xuân (04/02/2025 = Ngày 1 = Hàn Xuân)
+ * - 4 ngày đặc biệt (giao mùa): Day 1, 92, 183, 274
+ * - 12 tháng × 30 ngày = 360 ngày (bắt đầu từ Day 2)
+ * - Tuần: 10 ngày/tuần (không phải 7 ngày)
  * - Can Chi ngày: DÙNG CHUNG với Âm lịch
- * - Tuần: 7 ngày/tuần
  */
 export function getVanLangDateInfo(date: Date): VanLangDate {
   const dd = date.getDate();
   const mm = date.getMonth() + 1;
   const yy = date.getFullYear();
 
-  // Lấy thông tin âm lịch
-  const [lunarDay, lunarMonth] = solarToLunar(dd, mm, yy);
+  // Tính năm Văn Lang và ngày trong năm
+  // Năm Văn Lang 2025 bắt đầu từ 04/02/2025
+  let vanLangYear = yy;
+  let vanLangYearStart = getVanLangYearStart(vanLangYear);
 
-  // Tính số ngày từ Mùng 1 Tết (ngày 0 = Mùng 1 Tết)
-  const { daysSinceTet, vanLangYear } = getDaysSinceTet(date);
+  // Nếu ngày hiện tại trước ngày bắt đầu năm Văn Lang, thuộc năm trước
+  if (date < vanLangYearStart) {
+    vanLangYear -= 1;
+    vanLangYearStart = getVanLangYearStart(vanLangYear);
+  }
 
-  // dayOfYear bắt đầu từ 1, điều chỉnh offset để khớp với dữ liệu thực tế
-  // Offset = 6 dựa trên so sánh với các ngày mẫu từ PDF
-  const dayOfYear = Math.max(1, daysSinceTet + 1 - VAN_LANG_OFFSET);
+  // Tính số ngày từ đầu năm Văn Lang
+  const diffTime = date.getTime() - vanLangYearStart.getTime();
+  let dayOfYear = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+  // Xử lý năm nhuận (năm Văn Lang có thể > 365 ngày)
+  if (dayOfYear > 365) {
+    vanLangYear += 1;
+    vanLangYearStart = getVanLangYearStart(vanLangYear);
+    const newDiffTime = date.getTime() - vanLangYearStart.getTime();
+    dayOfYear = Math.floor(newDiffTime / (1000 * 60 * 60 * 24)) + 1;
+  }
 
   // Tính tháng và ngày Văn Lang
   const vanLangData = getVanLangMonthDay(dayOfYear);
@@ -1029,22 +1212,61 @@ export function getVanLangDateInfo(date: Date): VanLangDate {
     displayMonth = month;
   }
 
-  // Tuần trong năm Văn Lang (11 ngày/tuần)
-  // Xác nhận: Day 11 = Week 01, Day 12 = Week 02
-  const weekOfYear = Math.ceil(dayOfYear / 11);
+  // Tuần trong năm Văn Lang (10 ngày/tuần - không phải 7 ngày như lịch Dương)
+  // Tuần 01: Ngày 2-11, Tuần 02: Ngày 12-21, Tuần 03: Ngày 22-31, ...
+  // Các ngày đặc biệt (1, 92, 183, 274, 358, 365) không thuộc tuần nào
+  // Tính số ngày thường (bỏ qua ngày đặc biệt) để tính tuần
+  let dayInRegularSequence: number;
+  if (isSpecialDay || isTetDay) {
+    // Ngày đặc biệt không thuộc tuần nào
+    dayInRegularSequence = 0;
+  } else {
+    // Tính số ngày thường (bỏ qua các ngày đặc biệt: 1, 92, 183, 274, 358)
+    if (dayOfYear < 92) {
+      dayInRegularSequence = dayOfYear - 1; // Bỏ qua ngày 1
+    } else if (dayOfYear < 183) {
+      dayInRegularSequence = dayOfYear - 2; // Bỏ qua ngày 1, 92
+    } else if (dayOfYear < 274) {
+      dayInRegularSequence = dayOfYear - 3; // Bỏ qua ngày 1, 92, 183
+    } else if (dayOfYear < 358) {
+      dayInRegularSequence = dayOfYear - 4; // Bỏ qua ngày 1, 92, 183, 274
+    } else {
+      // dayOfYear >= 359 (đã bỏ qua ngày 358)
+      dayInRegularSequence = dayOfYear - 5; // Bỏ qua ngày 1, 92, 183, 274, 358
+    }
+  }
+  // Tuần 10 ngày/tuần: Tuần 1 = ngày 1-10, Tuần 2 = ngày 11-20, ...
+  const weekOfYear =
+    dayInRegularSequence <= 0 ? 0 : Math.ceil(dayInRegularSequence / 10);
 
-  // Can Chi ngày: DÙNG CHUNG với Âm lịch
-  const dayCanChi = getDayCanChi(dd, mm, yy);
+  // Can Chi ngày theo Lịch Văn Lang (RIÊNG, không dùng chung với Âm lịch)
+  // Bắt đầu từ Giáp Dần vào ngày 01 Tháng Giêng, chu kỳ 60 ngày trên 360 ngày thường
+  const vanLangCanChi = getVanLangDayCanChi(dayOfYear);
+  const dayCanChi = vanLangCanChi || "Ngày Biên"; // Ngày Biên không có Can Chi chu kỳ
 
   // Can Chi tháng (nếu không phải Tết/Giao mùa)
   const monthCanChi =
     displayMonth > 0 ? getMonthCanChi(displayMonth, vanLangYear) : "";
 
-  // Thông tin Con Nước
-  const conNuoc = getConNuoc(lunarDay, lunarMonth, dd, mm, yy);
+  // Thông tin Con Nước (dùng ngày/tháng Văn Lang, không dùng âm lịch)
+  const conNuoc = getConNuoc(
+    day,
+    displayMonth,
+    dd,
+    mm,
+    yy,
+    dayOfYear,
+    vanLangYearStart
+  );
 
-  // Lấy tên tháng âm lịch cho Con Nước
-  const lunarMonthName = THANG_AM[lunarMonth - 1] || "";
+  // Lấy tên tháng Văn Lang cho Con Nước
+  const vanLangMonthName =
+    displayMonth > 0
+      ? THANG_VAN_LANG_TEN[displayMonth - 1] || ""
+      : specialName || "Ngày đặc biệt";
+
+  // Lấy thông tin âm lịch cho ngày lễ đặc biệt
+  const [lunarDay, lunarMonth] = solarToLunar(dd, mm, yy);
 
   return {
     year: vanLangYear,
@@ -1060,16 +1282,14 @@ export function getVanLangDateInfo(date: Date): VanLangDate {
     dayCanChi,
     dayOfYear,
     weekOfYear,
-    weekOfMonth: displayMonth > 0 ? Math.ceil(day / 11) : 0, // 11 ngày/tuần
-    specialDay: getSpecialDay(lunarMonth, lunarDay),
+    weekOfMonth: displayMonth > 0 ? Math.ceil(day / 14) : 0, // 14 ngày/tuần (tuần con nước)
     conNuoc: {
       name: conNuoc.name,
       phase: conNuoc.cycleName,
-      desc: `Tuần ${conNuoc.weekOfMonth.toString().padStart(2, "0")} tháng ${lunarMonthName} - Tuần ${conNuoc.weekOfYear.toString().padStart(2, "0")} của năm`,
-      canChi: dayCanChi,
-      weekOfMonth: conNuoc.weekOfMonth,
-      weekOfYear: conNuoc.weekOfYear,
-      dayInCycle: conNuoc.dayNumber,
+      desc:
+        displayMonth > 0
+          ? `Tuần ${conNuoc.weekOfMonth.toString().padStart(2, "0")} tháng ${vanLangMonthName} - Tuần ${conNuoc.weekOfYear.toString().padStart(2, "0")} của năm`
+          : `${vanLangMonthName} - Tuần ${conNuoc.weekOfYear.toString().padStart(2, "0")} của năm`,
     },
   };
 }

@@ -2,15 +2,25 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { getFullCalendarInfo, CalendarInfo } from "@/lib/utils/calendarUtils";
 
 export default function CalendarSidebar() {
   const [mounted, setMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
+  const [calendarInfo, setCalendarInfo] = useState<CalendarInfo | null>(null);
 
   useEffect(() => {
     setMounted(true);
-    setCurrentTime(new Date());
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    const now = new Date();
+    setCurrentTime(now);
+    setCalendarInfo(getFullCalendarInfo(now));
+
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+      setCalendarInfo(getFullCalendarInfo(now));
+    }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -26,13 +36,6 @@ export default function CalendarSidebar() {
   const weekday = currentTime
     ? currentTime.toLocaleDateString("vi-VN", { weekday: "long" })
     : "---";
-  const dateStr = currentTime
-    ? currentTime.toLocaleDateString("vi-VN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-    : "--/--/----";
 
   // Không render gì khi chưa mount để tránh hydration mismatch
   if (!mounted) {
@@ -61,65 +64,107 @@ export default function CalendarSidebar() {
               </div>
               <div className="hidden md:block text-[10px] leading-tight text-slate-400">
                 <div>{weekday}</div>
-                <div className="text-white/70">{dateStr}</div>
               </div>
             </div>
 
             {/* Âm Dương - compact, phụ */}
-            <div className="hidden lg:flex items-center gap-3 text-[10px] text-slate-400">
-              <div className="flex items-center gap-1">
-                <span>☀️</span>
-                <span>04/12 T49</span>
+            {calendarInfo && (
+              <div className="hidden lg:flex items-center gap-3 text-[10px] text-slate-400">
+                <div className="flex items-center gap-1">
+                  <span>☀️</span>
+                  <span>
+                    {calendarInfo.solar.day.toString().padStart(2, "0")}/
+                    {calendarInfo.solar.month.toString().padStart(2, "0")} T
+                    {calendarInfo.solar.weekOfYear}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span>🌙</span>
+                  <span>
+                    {calendarInfo.lunar.day.toString().padStart(2, "0")}/
+                    {calendarInfo.lunar.month.toString().padStart(2, "0")}{" "}
+                    {calendarInfo.lunar.dayCanChi}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                <span>🌙</span>
-                <span>04/11 Giáp Thìn</span>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Center: Văn Lang & Con Nước (chính) */}
-          <div className="flex items-center gap-3 md:gap-6">
-            {/* Văn Lang - Thông tin chính */}
-            <div className="flex items-center gap-2 md:gap-3 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-3 md:px-4 py-1">
-              <div className="text-center">
-                <div className="text-[8px] md:text-[10px] text-emerald-400/80 uppercase font-semibold tracking-wide">
-                  Văn Lang
+          {calendarInfo && (
+            <div className="flex items-center gap-3 md:gap-6">
+              {/* Văn Lang - Thông tin chính */}
+              <div className="flex items-center gap-2 md:gap-3 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-3 md:px-4 py-1">
+                <div className="text-center">
+                  <div className="text-[8px] md:text-[10px] text-emerald-400/80 uppercase font-semibold tracking-wide">
+                    Văn Lang
+                  </div>
+                  <div className="text-xl md:text-2xl font-bold text-emerald-400 leading-none">
+                    {calendarInfo.vanLang.month === 0
+                      ? calendarInfo.vanLang.dayOfYear
+                      : calendarInfo.vanLang.day.toString().padStart(2, "0")}
+                  </div>
                 </div>
-                <div className="text-xl md:text-2xl font-bold text-emerald-400 leading-none">
-                  15
+                <div className="hidden sm:block w-px h-8 bg-emerald-500/30" />
+                <div className="hidden sm:block text-xs leading-tight">
+                  <div className="text-emerald-300 font-bold">
+                    {calendarInfo.vanLang.month === 0
+                      ? calendarInfo.vanLang.monthName
+                      : `Tháng ${calendarInfo.vanLang.monthName} (${
+                          calendarInfo.vanLang.month
+                        })`}
+                  </div>
+                  <div className="text-slate-400 text-[10px]">
+                    Năm {calendarInfo.vanLang.yearCanChi}
+                  </div>
+                  <div className="text-emerald-400/70 text-[10px]">
+                    {calendarInfo.vanLang.month === 0 ? (
+                      <>Ngày {calendarInfo.vanLang.dayOfYear}</>
+                    ) : (
+                      <>
+                        Ngày {calendarInfo.vanLang.dayOfYear} • Tuần{" "}
+                        {calendarInfo.vanLang.weekOfYear
+                          .toString()
+                          .padStart(2, "0")}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="hidden sm:block w-px h-8 bg-emerald-500/30" />
-              <div className="hidden sm:block text-xs leading-tight">
-                <div className="text-emerald-300 font-bold">Tháng Tý (11)</div>
-                <div className="text-slate-400 text-[10px]">Năm Ất Tỵ</div>
-                <div className="text-emerald-400/70 text-[10px]">
-                  Ngày 319 • Tuần 29
-                </div>
-              </div>
-            </div>
 
-            {/* Con Nước - Thông tin chính */}
-            <div className="flex items-center gap-2 md:gap-3 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-3 md:px-4 py-1">
-              <div className="text-center">
-                <div className="text-[8px] md:text-[10px] text-cyan-400/80 uppercase font-semibold tracking-wide">
-                  Con Nước
+              {/* Con Nước - Thông tin chính */}
+              <div className="flex items-center gap-2 md:gap-3 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-3 md:px-4 py-1">
+                <div className="text-center">
+                  <div className="text-[8px] md:text-[10px] text-cyan-400/80 uppercase font-semibold tracking-wide">
+                    Con Nước
+                  </div>
+                  <div className="text-xl md:text-2xl font-bold text-cyan-400 leading-none">
+                    {(() => {
+                      const dayMatch =
+                        calendarInfo.vanLang.conNuoc.name.match(/\d+/);
+                      return dayMatch ? dayMatch[0].padStart(2, "0") : "—";
+                    })()}
+                  </div>
                 </div>
-                <div className="text-xl md:text-2xl font-bold text-cyan-400 leading-none">
-                  02
-                </div>
-              </div>
-              <div className="hidden sm:block w-px h-8 bg-cyan-500/30" />
-              <div className="hidden sm:block text-xs leading-tight">
-                <div className="text-cyan-300 font-bold">con</div>
-                <div className="text-slate-400 text-[10px]">Tuần 01/Th.11</div>
-                <div className="text-cyan-400/70 text-[10px]">
-                  Sinh Thìn • Hồi Tỵ
+                <div className="hidden sm:block w-px h-8 bg-cyan-500/30" />
+                <div className="hidden sm:block text-xs leading-tight">
+                  <div className="text-cyan-300 font-bold">
+                    {calendarInfo.vanLang.conNuoc.phase}
+                  </div>
+                  <div className="text-slate-400 text-[10px]">
+                    {calendarInfo.vanLang.month > 0
+                      ? `Tuần ${calendarInfo.vanLang.weekOfMonth
+                          .toString()
+                          .padStart(2, "0")}/Th.${calendarInfo.vanLang.month}`
+                      : calendarInfo.vanLang.monthName}
+                  </div>
+                  <div className="text-cyan-400/70 text-[10px]">
+                    {calendarInfo.vanLang.conNuoc.desc.split(" - ")[1] || ""}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Right: Link */}
           <Link

@@ -9,6 +9,7 @@ import {
   GIO_CHI,
   THANG_AM,
   THANG_VAN_LANG_CHI,
+  THANG_VAN_LANG_TEN,
 } from "@/lib/utils/calendarUtils";
 
 export default function LichVanNienPage() {
@@ -113,19 +114,19 @@ export default function LichVanNienPage() {
       <section className="section">
         <div className="container">
           {/* Input Section */}
-          <div className="row justify-center mb-12">
+          <div className="row justify-center mb-8 lg:mb-12">
             <div className="col-12 lg:col-10">
               <div
                 data-aos="fade-up-sm"
                 data-aos-delay="100"
-                className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 border border-border"
+                className="bg-white rounded-xl lg:rounded-2xl shadow-lg p-4 lg:p-8 border border-border"
               >
                 {/* Mode Toggle */}
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center mb-4 lg:mb-6">
                   <div className="inline-flex rounded-full bg-light p-1">
                     <button
                       onClick={() => setInputMode("solar")}
-                      className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                      className={`px-4 lg:px-6 py-2 rounded-full text-xs lg:text-sm font-medium transition-all ${
                         inputMode === "solar"
                           ? "bg-primary text-white shadow"
                           : "text-body-color hover:text-primary"
@@ -135,7 +136,7 @@ export default function LichVanNienPage() {
                     </button>
                     <button
                       onClick={() => setInputMode("lunar")}
-                      className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                      className={`px-4 lg:px-6 py-2 rounded-full text-xs lg:text-sm font-medium transition-all ${
                         inputMode === "lunar"
                           ? "bg-primary text-white shadow"
                           : "text-body-color hover:text-primary"
@@ -148,9 +149,9 @@ export default function LichVanNienPage() {
 
                 {/* Solar Input */}
                 {inputMode === "solar" && (
-                  <div className="grid grid-cols-3 gap-4 mb-6">
+                  <div className="grid grid-cols-3 gap-2 lg:gap-4 mb-4 lg:mb-6">
                     <div>
-                      <label className="block text-sm font-medium text-body-color mb-2">
+                      <label className="block text-xs lg:text-sm font-medium text-body-color mb-1 lg:mb-2">
                         Ngày
                       </label>
                       <input
@@ -161,11 +162,11 @@ export default function LichVanNienPage() {
                         onChange={(e) =>
                           setSolarDay(parseInt(e.target.value) || 1)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+                        className="w-full px-2 lg:px-4 py-2 lg:py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-sm lg:text-base"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-body-color mb-2">
+                      <label className="block text-xs lg:text-sm font-medium text-body-color mb-1 lg:mb-2">
                         Tháng
                       </label>
                       <select
@@ -173,7 +174,7 @@ export default function LichVanNienPage() {
                         onChange={(e) =>
                           setSolarMonth(parseInt(e.target.value))
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+                        className="w-full px-2 lg:px-4 py-2 lg:py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-sm lg:text-base"
                       >
                         {Array.from({ length: 12 }, (_, i) => (
                           <option key={i + 1} value={i + 1}>
@@ -183,7 +184,7 @@ export default function LichVanNienPage() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-body-color mb-2">
+                      <label className="block text-xs lg:text-sm font-medium text-body-color mb-1 lg:mb-2">
                         Năm
                       </label>
                       <input
@@ -194,7 +195,7 @@ export default function LichVanNienPage() {
                         onChange={(e) =>
                           setSolarYear(parseInt(e.target.value) || 2024)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+                        className="w-full px-2 lg:px-4 py-2 lg:py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-sm lg:text-base"
                       />
                     </div>
                   </div>
@@ -202,9 +203,9 @@ export default function LichVanNienPage() {
 
                 {/* Lunar Input */}
                 {inputMode === "lunar" && (
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 mb-4 lg:mb-6">
                     <div>
-                      <label className="block text-sm font-medium text-body-color mb-2">
+                      <label className="block text-xs lg:text-sm font-medium text-body-color mb-1 lg:mb-2">
                         Ngày Âm
                       </label>
                       <input
@@ -215,11 +216,11 @@ export default function LichVanNienPage() {
                         onChange={(e) =>
                           setLunarDay(parseInt(e.target.value) || 1)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+                        className="w-full px-2 lg:px-4 py-2 lg:py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-sm lg:text-base"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-body-color mb-2">
+                      <label className="block text-xs lg:text-sm font-medium text-body-color mb-1 lg:mb-2">
                         Tháng Âm
                       </label>
                       <select
@@ -227,7 +228,7 @@ export default function LichVanNienPage() {
                         onChange={(e) =>
                           setLunarMonth(parseInt(e.target.value))
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+                        className="w-full px-2 lg:px-4 py-2 lg:py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-sm lg:text-base"
                       >
                         {THANG_AM.map((name, i) => (
                           <option key={i + 1} value={i + 1}>
@@ -237,7 +238,7 @@ export default function LichVanNienPage() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-body-color mb-2">
+                      <label className="block text-xs lg:text-sm font-medium text-body-color mb-1 lg:mb-2">
                         Năm Âm
                       </label>
                       <input
@@ -248,18 +249,18 @@ export default function LichVanNienPage() {
                         onChange={(e) =>
                           setLunarYear(parseInt(e.target.value) || 2024)
                         }
-                        className="w-full px-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+                        className="w-full px-2 lg:px-4 py-2 lg:py-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition text-sm lg:text-base"
                       />
                     </div>
-                    <div className="flex items-end">
-                      <label className="flex items-center gap-2 cursor-pointer">
+                    <div className="flex items-end col-span-2 lg:col-span-1">
+                      <label className="flex items-center gap-2 cursor-pointer py-2 lg:py-3">
                         <input
                           type="checkbox"
                           checked={isLeapMonth}
                           onChange={(e) => setIsLeapMonth(e.target.checked)}
-                          className="w-5 h-5 rounded border-border text-primary focus:ring-primary"
+                          className="w-4 h-4 lg:w-5 lg:h-5 rounded border-border text-primary focus:ring-primary"
                         />
-                        <span className="text-sm font-medium text-body-color">
+                        <span className="text-xs lg:text-sm font-medium text-body-color">
                           Tháng Nhuận
                         </span>
                       </label>
@@ -268,16 +269,16 @@ export default function LichVanNienPage() {
                 )}
 
                 {/* Buttons */}
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-center gap-2 lg:gap-4">
                   <button
                     onClick={handleConvert}
-                    className="px-8 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/30"
+                    className="px-6 lg:px-8 py-2.5 lg:py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/30 text-sm lg:text-base"
                   >
                     Chuyển Đổi
                   </button>
                   <button
                     onClick={setToday}
-                    className="px-8 py-3 bg-light text-primary rounded-lg font-medium hover:bg-primary/10 transition-all border border-primary"
+                    className="px-6 lg:px-8 py-2.5 lg:py-3 bg-light text-primary rounded-lg font-medium hover:bg-primary/10 transition-all border border-primary text-sm lg:text-base"
                   >
                     Hôm Nay
                   </button>
@@ -288,18 +289,18 @@ export default function LichVanNienPage() {
 
           {/* Calendar Results */}
           {calendarInfo && (
-            <div className="row g-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
               {/* Lịch Dương */}
-              <div className="col-12 lg:col-4">
+              <div className="lg:col-span-4">
                 <div
                   data-aos="fade-up-sm"
                   data-aos-delay="150"
-                  className="h-full bg-linear-to-br from-amber-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl"
+                  className="h-full bg-linear-to-br from-amber-500 to-orange-600 rounded-xl lg:rounded-2xl p-4 lg:p-5 text-white shadow-xl"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <div className="flex items-center gap-2 mb-3 lg:mb-4">
+                    <div className="w-9 h-9 lg:w-10 lg:h-10 bg-white/20 rounded-full flex items-center justify-center">
                       <svg
-                        className="w-6 h-6"
+                        className="w-4 h-4 lg:w-5 lg:h-5"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -307,38 +308,42 @@ export default function LichVanNienPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">Lịch Dương</h3>
-                      <p className="text-white/80 text-sm">Solar Calendar</p>
+                      <h3 className="text-base lg:text-lg font-bold">
+                        Lịch Dương
+                      </h3>
+                      <p className="text-white/80 text-[10px] lg:text-xs">
+                        Solar Calendar
+                      </p>
                     </div>
                   </div>
 
-                  <div className="text-center mb-6">
-                    <div className="text-6xl font-bold mb-2">
+                  <div className="text-center mb-3 lg:mb-4">
+                    <div className="text-4xl lg:text-5xl font-bold mb-1">
                       {calendarInfo.solar.day}
                     </div>
-                    <div className="text-xl">
+                    <div className="text-sm lg:text-base">
                       Tháng {calendarInfo.solar.month},{" "}
                       {calendarInfo.solar.year}
                     </div>
-                    <div className="text-white/90 mt-2">
+                    <div className="text-white/90 mt-1 text-xs lg:text-sm">
                       {calendarInfo.solar.dayOfWeekName}
                     </div>
                   </div>
 
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between py-2 border-t border-white/20">
+                  <div className="space-y-1.5 lg:space-y-2 text-[10px] lg:text-xs">
+                    <div className="flex justify-between py-1.5 border-t border-white/20">
                       <span className="text-white/80">Tuần thứ</span>
                       <span className="font-medium">
                         {calendarInfo.solar.weekOfYear}
                       </span>
                     </div>
-                    <div className="flex justify-between py-2 border-t border-white/20">
-                      <span className="text-white/80">Ngày thứ trong năm</span>
+                    <div className="flex justify-between py-1.5 border-t border-white/20">
+                      <span className="text-white/80">Ngày trong năm</span>
                       <span className="font-medium">
                         {calendarInfo.solar.dayOfYear}
                       </span>
                     </div>
-                    <div className="flex justify-between py-2 border-t border-white/20">
+                    <div className="flex justify-between py-1.5 border-t border-white/20">
                       <span className="text-white/80">Giờ hiện tại</span>
                       <span className="font-medium">{currentTime}</span>
                     </div>
@@ -346,17 +351,17 @@ export default function LichVanNienPage() {
                 </div>
               </div>
 
-              {/* Lịch Âm */}
-              <div className="col-12 lg:col-4">
+              {/* Lịch Âm + Giờ Hoàng Đạo */}
+              <div className="lg:col-span-4">
                 <div
                   data-aos="fade-up-sm"
                   data-aos-delay="200"
-                  className="h-full bg-linear-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-xl"
+                  className="h-full bg-linear-to-br from-indigo-600 to-purple-700 rounded-xl lg:rounded-2xl p-4 lg:p-5 text-white shadow-xl"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <div className="flex items-center gap-2 mb-3 lg:mb-4">
+                    <div className="w-9 h-9 lg:w-10 lg:h-10 bg-white/20 rounded-full flex items-center justify-center">
                       <svg
-                        className="w-6 h-6"
+                        className="w-4 h-4 lg:w-5 lg:h-5"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -368,65 +373,106 @@ export default function LichVanNienPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">Lịch Âm</h3>
-                      <p className="text-white/80 text-sm">Lunar Calendar</p>
+                      <h3 className="text-base lg:text-lg font-bold">
+                        Lịch Âm
+                      </h3>
+                      <p className="text-white/80 text-[10px] lg:text-xs">
+                        Lunar Calendar
+                      </p>
                     </div>
                   </div>
 
-                  <div className="text-center mb-6">
-                    <div className="text-6xl font-bold mb-2">
+                  <div className="text-center mb-3 lg:mb-4">
+                    <div className="text-4xl lg:text-5xl font-bold mb-1">
                       {calendarInfo.lunar.day}
                     </div>
-                    <div className="text-xl">
+                    <div className="text-sm lg:text-base">
                       Tháng {calendarInfo.lunar.monthName}
                       {calendarInfo.lunar.isLeapMonth && " (Nhuận)"}
                     </div>
-                    <div className="text-white/90 mt-2">
+                    <div className="text-white/90 mt-1 text-xs lg:text-sm">
                       Năm {calendarInfo.lunar.yearCanChi} (
                       {calendarInfo.lunar.zodiac})
                     </div>
                   </div>
 
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between py-2 border-t border-white/20">
+                  <div className="space-y-1.5 lg:space-y-2 text-[10px] lg:text-xs">
+                    <div className="flex justify-between py-1.5 border-t border-white/20">
                       <span className="text-white/80">Can Chi Tháng</span>
                       <span className="font-medium">
                         {calendarInfo.lunar.monthCanChi}
                       </span>
                     </div>
-                    <div className="flex justify-between py-2 border-t border-white/20">
+                    <div className="flex justify-between py-1.5 border-t border-white/20">
                       <span className="text-white/80">Can Chi Ngày</span>
                       <span className="font-medium">
                         {calendarInfo.lunar.dayCanChi}
                       </span>
                     </div>
-                    <div className="flex justify-between py-2 border-t border-white/20">
+                    <div className="flex justify-between py-1.5 border-t border-white/20">
                       <span className="text-white/80">Giờ bắt đầu</span>
                       <span className="font-medium">
                         {calendarInfo.lunar.hourCanChi}
                       </span>
                     </div>
-                    <div className="flex justify-between py-2 border-t border-white/20">
+                    <div className="flex justify-between py-1.5 border-t border-white/20">
                       <span className="text-white/80">Tiết Khí</span>
                       <span className="font-medium">
                         {calendarInfo.lunar.tietKhi}
                       </span>
                     </div>
+                    {calendarInfo.lunar.specialDay && (
+                      <div className="py-1.5 border-t border-white/20">
+                        <div className="bg-white/20 rounded-md px-2 py-1.5 text-center">
+                          <span className="font-bold text-[10px] lg:text-xs">
+                            🎉 {calendarInfo.lunar.specialDay}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Giờ Hoàng Đạo - Nested inside Lunar Calendar */}
+                  <div className="mt-3 lg:mt-4 pt-3 lg:pt-4 border-t border-white/20">
+                    <h4 className="text-xs lg:text-sm font-bold mb-2 text-center">
+                      ⏰ Giờ Hoàng Đạo
+                    </h4>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {calendarInfo.lunar.gioHoangDao.map((chi, index) => {
+                        const gioInfo = GIO_CHI.find((g) => g.chi === chi);
+                        return (
+                          <div
+                            key={index}
+                            className="bg-white/20 rounded-md p-1.5 text-center"
+                          >
+                            <div className="text-[10px] lg:text-xs font-bold">
+                              {chi}
+                            </div>
+                            {gioInfo && (
+                              <div className="text-[8px] lg:text-[10px] text-white/80">
+                                {gioInfo.start}-{gioInfo.end}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Lịch Văn Lang */}
-              <div className="col-12 lg:col-4">
+              {/* Lịch Văn Lang + Con Nước - Combined Section */}
+              <div className="lg:col-span-4">
                 <div
                   data-aos="fade-up-sm"
                   data-aos-delay="250"
-                  className="h-full bg-linear-to-br from-emerald-600 to-teal-700 rounded-2xl p-6 text-white shadow-xl"
+                  className="h-full bg-linear-to-br from-emerald-600 to-teal-700 rounded-xl lg:rounded-2xl p-4 lg:p-5 text-white shadow-xl"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  {/* Lịch Văn Lang */}
+                  <div className="flex items-center gap-2 mb-3 lg:mb-4">
+                    <div className="w-9 h-9 lg:w-10 lg:h-10 bg-white/20 rounded-full flex items-center justify-center">
                       <svg
-                        className="w-6 h-6"
+                        className="w-4 h-4 lg:w-5 lg:h-5"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -438,162 +484,93 @@ export default function LichVanNienPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">Lịch Văn Lang</h3>
-                      <p className="text-white/80 text-sm">
+                      <h3 className="text-base lg:text-lg font-bold">
+                        Lịch Văn Lang & Con Nước
+                      </h3>
+                      <p className="text-white/80 text-[10px] lg:text-xs">
                         Lịch Trái Đất - Việt Cổ
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-center mb-6">
-                    {calendarInfo.vanLang.month === 0 ? (
-                      // Ngày đặc biệt (Giao mùa, Táo Quân)
-                      <>
-                        <div className="text-4xl font-bold mb-2 text-yellow-300">
-                          {calendarInfo.vanLang.monthName}
-                        </div>
-                        <div className="text-white/90 mt-2">
-                          Năm {calendarInfo.vanLang.yearCanChi}
-                        </div>
-                      </>
-                    ) : (
-                      // Ngày thường trong tháng
-                      <>
-                        <div className="text-6xl font-bold mb-2">
-                          {calendarInfo.vanLang.day.toString().padStart(2, "0")}
-                        </div>
-                        <div className="text-xl">
-                          Tháng{" "}
-                          {THANG_VAN_LANG_CHI[calendarInfo.vanLang.month - 1]} (
-                          {calendarInfo.vanLang.month
-                            .toString()
-                            .padStart(2, "0")}
-                          )
-                        </div>
-                        <div className="text-white/90 mt-2">
-                          Năm {calendarInfo.vanLang.yearCanChi}
-                        </div>
-                      </>
-                    )}
-                  </div>
+                  <div className="space-y-4">
+                    {/* Van Lang Info */}
+                    <div>
+                      <div className="text-center mb-3">
+                        {calendarInfo.vanLang.month === 0 ? (
+                          <>
+                            <div className="text-2xl lg:text-3xl font-bold mb-1 text-yellow-300">
+                              {calendarInfo.vanLang.monthName}
+                            </div>
+                            <div className="text-white/90 text-xs lg:text-sm">
+                              Năm {calendarInfo.vanLang.yearCanChi}
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-4xl lg:text-5xl font-bold mb-1">
+                              {calendarInfo.vanLang.day
+                                .toString()
+                                .padStart(2, "0")}
+                            </div>
+                            <div className="text-sm lg:text-base">
+                              Tháng{" "}
+                              {
+                                THANG_VAN_LANG_TEN[
+                                  calendarInfo.vanLang.month - 1
+                                ]
+                              }{" "}
+                              (
+                              {
+                                THANG_VAN_LANG_CHI[
+                                  calendarInfo.vanLang.month - 1
+                                ]
+                              }
+                              )
+                            </div>
+                            <div className="text-white/90 text-xs lg:text-sm">
+                              Năm {calendarInfo.vanLang.yearCanChi}
+                            </div>
+                          </>
+                        )}
+                      </div>
 
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between py-2 border-t border-white/20">
-                      <span className="text-white/80">Ngày Can Chi</span>
-                      <span className="font-medium">
-                        {calendarInfo.vanLang.dayCanChi}
-                      </span>
-                    </div>
-                    <div className="flex justify-between py-2 border-t border-white/20">
-                      <span className="text-white/80">Ngày thứ trong năm</span>
-                      <span className="font-medium">
-                        {calendarInfo.vanLang.dayOfYear
-                          .toString()
-                          .padStart(3, "0")}
-                      </span>
-                    </div>
-                    <div className="flex justify-between py-2 border-t border-white/20">
-                      <span className="text-white/80">Tuần trong năm</span>
-                      <span className="font-medium">
-                        Tuần{" "}
-                        {calendarInfo.vanLang.weekOfYear
-                          .toString()
-                          .padStart(2, "0")}
-                      </span>
-                    </div>
-                    {calendarInfo.vanLang.specialDay && (
-                      <div className="py-2 border-t border-white/20">
-                        <div className="bg-white/20 rounded-lg px-3 py-2 text-center">
-                          <span className="font-bold">
-                            🎉 {calendarInfo.vanLang.specialDay}
+                      <div className="space-y-1.5 text-[10px] lg:text-xs">
+                        <div className="flex justify-between py-1.5 border-t border-white/20">
+                          <span className="text-white/80">Can Chi Ngày</span>
+                          <span className="font-medium">
+                            {calendarInfo.vanLang.dayCanChi}
+                          </span>
+                        </div>
+                        <div className="flex justify-between py-1.5 border-t border-white/20">
+                          <span className="text-white/80">Ngày trong năm</span>
+                          <span className="font-medium">
+                            {calendarInfo.vanLang.dayOfYear
+                              .toString()
+                              .padStart(3, "0")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between py-1.5 border-t border-white/20">
+                          <span className="text-white/80">Tuần trong năm</span>
+                          <span className="font-medium">
+                            Tuần{" "}
+                            {calendarInfo.vanLang.weekOfYear
+                              .toString()
+                              .padStart(2, "0")}
                           </span>
                         </div>
                       </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+                    </div>
 
-          {/* Giờ Hoàng Đạo */}
-          {calendarInfo && (
-            <div className="row mt-12">
-              <div className="col-12">
-                <div
-                  data-aos="fade-up-sm"
-                  data-aos-delay="300"
-                  className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 border border-border"
-                >
-                  <h3 className="text-xl font-bold text-primary mb-6 text-center">
-                    ⏰ Giờ Hoàng Đạo - Ngày {calendarInfo.lunar.dayCanChi}
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {calendarInfo.lunar.gioHoangDao.map((chi, index) => {
-                      const gioInfo = GIO_CHI.find((g) => g.chi === chi);
-                      return (
-                        <div
-                          key={index}
-                          className="bg-linear-to-br from-yellow-400 to-amber-500 rounded-xl p-4 text-center text-white shadow-lg"
-                        >
-                          <div className="text-lg font-bold">{chi}</div>
-                          {gioInfo && (
-                            <div className="text-sm text-white/90 mt-1">
-                              {gioInfo.start} - {gioInfo.end}
-                            </div>
-                          )}
+                    {/* Con Nuoc Info */}
+                    <div className="border-t border-white/20 pt-4">
+                      <div className="text-center mb-3">
+                        <div className="text-xl lg:text-2xl font-bold mb-1 text-cyan-300">
+                          🌊 {calendarInfo.vanLang.conNuoc.name}
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Con Nước */}
-          {calendarInfo && (
-            <div className="row mt-8">
-              <div className="col-12">
-                <div
-                  data-aos="fade-up-sm"
-                  data-aos-delay="350"
-                  className="bg-linear-to-r from-cyan-600 to-blue-700 rounded-2xl shadow-lg p-6 lg:p-8 text-white"
-                >
-                  <h3 className="text-xl font-bold mb-6 text-center">
-                    🌊 Lịch Con Nước
-                  </h3>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="text-center">
-                      <div className="text-3xl mb-2">💧</div>
-                      <div className="text-sm text-white/80">Ngày Con Nước</div>
-                      <div className="text-lg font-bold">
-                        {calendarInfo.vanLang.conNuoc.name}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl mb-2">📅</div>
-                      <div className="text-sm text-white/80">Tuần tháng</div>
-                      <div className="text-lg font-bold">
-                        Tuần{" "}
-                        {calendarInfo.vanLang.conNuoc.weekOfMonth
-                          .toString()
-                          .padStart(2, "0")}{" "}
-                        tháng {THANG_AM[calendarInfo.lunar.month - 1]}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl mb-2">🗓️</div>
-                      <div className="text-sm text-white/80">Tuần năm</div>
-                      <div className="text-lg font-bold">
-                        Tuần {calendarInfo.vanLang.conNuoc.weekOfYear} của năm
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl mb-2">🔄</div>
-                      <div className="text-sm text-white/80">Sinh - Hồi</div>
-                      <div className="text-lg font-bold">
-                        {calendarInfo.vanLang.conNuoc.desc}
+                        <div className="text-white/90 text-[10px] lg:text-xs">
+                          {calendarInfo.vanLang.conNuoc.desc}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -603,45 +580,45 @@ export default function LichVanNienPage() {
           )}
 
           {/* Info Section */}
-          <div className="row mt-12">
+          <div className="row mt-8 lg:mt-12">
             <div className="col-12">
               <div
                 data-aos="fade-up-sm"
                 data-aos-delay="400"
-                className="bg-light rounded-2xl p-6 lg:p-8"
+                className="bg-light rounded-xl lg:rounded-2xl p-4 lg:p-8"
               >
-                <h3 className="text-xl font-bold text-primary mb-6">
+                <h3 className="text-lg lg:text-xl font-bold text-primary mb-4 lg:mb-6">
                   📚 Giải Thích Các Loại Lịch
                 </h3>
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-3 gap-4 lg:gap-6">
                   <div>
-                    <h4 className="font-bold text-amber-600 mb-2">
+                    <h4 className="font-bold text-amber-600 mb-2 text-sm lg:text-base">
                       ☀️ Lịch Dương (Solar)
                     </h4>
-                    <p className="text-body-color text-sm">
+                    <p className="text-body-color text-xs lg:text-sm">
                       Dựa trên lịch Gregorian tiêu chuẩn, theo chu kỳ Mặt Trời.
                       Bao gồm năm, tháng, ngày, thứ trong tuần, tuần thứ bao
                       nhiêu và ngày thứ bao nhiêu trong năm.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-indigo-600 mb-2">
+                    <h4 className="font-bold text-indigo-600 mb-2 text-sm lg:text-base">
                       🌙 Lịch Âm (Lunar)
                     </h4>
-                    <p className="text-body-color text-sm">
+                    <p className="text-body-color text-xs lg:text-sm">
                       Dựa trên lịch Việt Nam theo chu kỳ Mặt Trăng. Sử dụng
                       Can-Chi cho năm, tháng, ngày. Bao gồm tiết khí và giờ
                       hoàng đạo (giờ tốt) trong ngày.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-emerald-600 mb-2">
-                      🌍 Lịch Văn Lang (Earth)
+                    <h4 className="font-bold text-emerald-600 mb-2 text-sm lg:text-base">
+                      🌍 Lịch Văn Lang & Con Nước
                     </h4>
-                    <p className="text-body-color text-sm">
-                      Hệ thống lịch cổ Việt Nam. Bao gồm ngày lễ đặc biệt (Giỗ
-                      Tổ Hùng Vương, Tết...) và &ldquo;Con Nước&rdquo; - thông
-                      tin về chu kỳ thủy triều theo âm lịch.
+                    <p className="text-body-color text-xs lg:text-sm">
+                      Lịch cổ Việt Nam với 12 tháng × 30 ngày + 4 ngày giao mùa.
+                      Tuần Văn Lang gồm 10 ngày. Lịch Con Nước theo lịch Văn
+                      Lang, tuần 14 ngày với các mốc: nghén, chày, cường.
                     </p>
                   </div>
                 </div>
