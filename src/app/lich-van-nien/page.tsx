@@ -11,11 +11,13 @@ import {
   THANG_VAN_LANG_CHI,
   THANG_VAN_LANG_TEN,
 } from "@/lib/utils/calendarUtils";
+import { useRouter } from "next/navigation";
 
 export default function LichVanNienPage() {
   const [calendarInfo, setCalendarInfo] = useState<CalendarInfo | null>(null);
   const [inputMode, setInputMode] = useState<"solar" | "lunar">("solar");
   const [currentTime, setCurrentTime] = useState<string>("");
+  const router = useRouter();
 
   // Solar date inputs
   const [solarDay, setSolarDay] = useState<number>(new Date().getDate());
@@ -105,6 +107,10 @@ export default function LichVanNienPage() {
     setLunarMonth(info.lunar.month);
     setLunarYear(info.lunar.year);
     setIsLeapMonth(info.lunar.isLeapMonth);
+  };
+
+  const goToDetails = () => {
+    router.push("/");
   };
 
   return (
@@ -573,6 +579,13 @@ export default function LichVanNienPage() {
                         </div>
                       </div>
                     </div>
+
+                    <button
+                      className="w-full bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/30 text-sm lg:text-base py-2"
+                      onClick={() => goToDetails()}
+                    >
+                      Xem chi tiết
+                    </button>
                   </div>
                 </div>
               </div>
